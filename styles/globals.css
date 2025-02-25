@@ -23,12 +23,13 @@
   }
 
   f/* Formulário com flexbox para disposição lado a lado */
-form {
-    display: flex;
-    flex-wrap: wrap; /* Permite que os campos se ajustem em múltiplas linhas */
-    justify-content: space-between;
-    gap: 1.5rem; /* Espaçamento maior entre os campos */
-    max-width: 800px; /* Limitar largura do formulário */
+  form {
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 800px;
     margin: 0 auto;
   }
   
@@ -39,9 +40,10 @@ form {
     border-radius: 5px;
     padding: 0.8rem;
     font-size: 1rem;
-    width: 300%; /* Aumentar a largura para 45% */
-    margin-bottom: 0.5rem; /* Espaçamento entre as linhas de campos */
+    width: 100%; /* use 100% ou um valor em % que faça sentido */
+    margin-bottom: 0.5rem;
   }
+  
   
   input:focus {
     border-color: #2ecc71;

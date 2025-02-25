@@ -7,8 +7,7 @@ export default function Admin() {
   return (
     <div>
       <h1>Painel do Administrador</h1>
-      <button onClick={() => router.push("/admin/cadastro-aluno")}>Cadastro de Aluno</button>
-      <button onClick={() => router.push("/admin/cadastro-motorista")}>Cadastro de Motorista</button>
+      <p>Bem-vindo ao painel de administração. Utilize a sidebar para navegar.</p>
     </div>
   );
 }

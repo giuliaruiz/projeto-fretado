@@ -1,5 +1,5 @@
-// /app/layout.js
-import "../styles/globals.css";  // Adicionando a importação do CSS global
+// app/layout.js
+import "../styles/globals.css";
 
 export default function RootLayout({ children }) {
   return (
@@ -8,5 +8,6 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
 
   
