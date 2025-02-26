@@ -35,20 +35,19 @@ export default function Sidebar({ role, userData }) {
   const renderMotoristaSidebar = () => (
     <>
       <div style={styles.userInfo}>
-      <img 
-        src="/images/rosto-menino.jpg" 
-        alt="Foto do Motorista" 
-        style={{ width: "100px", height: "100px", borderRadius: "50%" }} 
-      />
-
+        <img 
+          src="/images/rosto-menino.jpg" 
+          alt="Foto do Motorista" 
+          style={styles.avatar} 
+        />
         <h2 style={styles.header}>{userData?.nome || "Motorista"}</h2>
       </div>
       <ul style={styles.list}>
         <li style={styles.item} onClick={() => handleNavigation("/motorista/perfil")}>
           Ver Perfil
         </li>
-        <li style={styles.item} onClick={() => handleNavigation("/motorista/intinerarios")}>
-          Intinerários
+        <li style={styles.item} onClick={() => handleNavigation("/motorista/itinerarios")}>
+          Itinerários
         </li>
         <li style={styles.item} onClick={() => handleNavigation("/motorista/horarios")}>
           Horários
@@ -60,12 +59,11 @@ export default function Sidebar({ role, userData }) {
   const renderAlunoSidebar = () => (
     <>
       <div style={styles.userInfo}>
-      <img 
-        src="/images/rosto-menina.jpg" 
-        alt="Foto do Motorista" 
-        style={{ width: "100px", height: "100px", borderRadius: "50%" }} 
-      />
-
+        <img 
+          src="/images/rosto-menina.jpg" 
+          alt="Foto do Aluno" 
+          style={styles.avatar} 
+        />
         <h2 style={styles.header}>{userData?.nome || "Aluno"}</h2>
       </div>
       <ul style={styles.list}>
@@ -104,24 +102,26 @@ const styles = {
     top: 0,
     left: 0,
     overflowY: "auto",
-    display: "flex",       // Ativa o flexbox
-    flexDirection: "column", // Organiza os elementos em coluna
+    display: "flex",
+    flexDirection: "column",
   },
   userInfo: {
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     marginBottom: "1rem",
   },
   avatar: {
-    width: "50px",
-    height: "50px",
+    width: "100px",
+    height: "100px",
     borderRadius: "50%",
-    marginRight: "0.5rem",
     objectFit: "cover",
+    marginBottom: "0.5rem",
   },
   header: {
     fontSize: "1.2rem",
     marginBottom: "1rem",
+    textAlign: "center",
   },
   list: {
     listStyle: "none",
@@ -132,9 +132,10 @@ const styles = {
     cursor: "pointer",
     padding: "0.5rem 0",
     borderBottom: "1px solid #333",
+    textAlign: "center",
   },
   logoutContainer: {
-    marginTop: "auto", // Garante que o botão fique no final
+    marginTop: "auto",
     paddingTop: "1rem",
   },
   logoutButton: {
@@ -147,3 +148,4 @@ const styles = {
     width: "100%",
   },
 };
+
