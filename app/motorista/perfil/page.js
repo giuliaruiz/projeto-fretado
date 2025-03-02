@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { GetCookie } from "../../actions/cookie";
 
 const perfilContainerStyle = {
   padding: "2rem",
@@ -48,20 +49,21 @@ const perfilBotaoHoverStyle = {
 };
 
 const VerPerfilMotorista = () => {
-  const perfil = {
-    nomeCompleto: "Motorista Exemplo",
-    cpf: "987.654.321-00",
-    email: "motorista@email.com",
-    placaVeiculo: "ABC-1234",
-  };
+  const [perfil, setPerfil] = useState({})
+  
+  useEffect(() => {
+    (async () => {
+      const data = await GetCookie()
+      setPerfil(data.data)
+    })()
+  }, [])
 
   return (
     <div style={perfilContainerStyle}>
-      <h1 style={perfilTituloStyle}>Perfil de {perfil.nomeCompleto}</h1>
+      <h1 style={perfilTituloStyle}>Perfil de {perfil.nome}</h1>
       <div style={perfilInfoStyle}>
-        <div style={perfilItemStyle}><strong>CPF:</strong> {perfil.cpf}</div>
         <div style={perfilItemStyle}><strong>Email:</strong> {perfil.email}</div>
-        <div style={perfilItemStyle}><strong>Placa do Veículo:</strong> {perfil.placaVeiculo}</div>
+        <div style={perfilItemStyle}><strong>Nº Habilitação:</strong> {perfil.habilitacao}</div>
       </div>
       <button
         style={perfilBotaoStyle}

@@ -14,9 +14,27 @@ export default function CadastroAluno() {
     numero: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+
+    try {
+      const resp = await fetch("http://localhost:3002/admin/createStudent ", {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (resp.status != 201) {
+        throw new Error(data.message || "Erro ao cadastrar usuário");
+      }
+  
+      alert("Cadastro realizado com sucesso!");
+      router.push("/admin");
+  
+    } catch (error) {
+      console.error("Erro no cadastro:", error);
+      alert("Falha ao cadastrar. Verifique os dados.");
+    }
   };
 
   const router = useRouter();

@@ -7,12 +7,30 @@ export default function CadastroMotorista() {
     nome: "",
     cpf: "",
     email: "",
-    placa: "",
+    habilitacao: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+
+    try {
+      const resp = await fetch("http://localhost:3002/admin/createDriver", {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (resp.status != 201) {
+        throw new Error(data.message || "Erro ao cadastrar usuário");
+      }
+  
+      alert("Cadastro realizado com sucesso!");
+      router.push("/admin");
+  
+    } catch (error) {
+      console.error("Erro no cadastro:", error);
+      alert("Falha ao cadastrar. Verifique os dados.");
+    }
   };
 
   const router = useRouter();
@@ -28,12 +46,6 @@ export default function CadastroMotorista() {
           onChange={(e) => setForm({ ...form, nome: e.target.value })}
         />
         <input
-          type="text"
-          placeholder="CPF"
-          value={form.cpf}
-          onChange={(e) => setForm({ ...form, cpf: e.target.value })}
-        />
-        <input
           type="email"
           placeholder="Email"
           value={form.email}
@@ -41,9 +53,9 @@ export default function CadastroMotorista() {
         />
         <input
           type="text"
-          placeholder="Placa do Veículo"
-          value={form.placa}
-          onChange={(e) => setForm({ ...form, placa: e.target.value })}
+          placeholder="Nº Habilitação"
+          value={form.habilitacao}
+          onChange={(e) => setForm({ ...form, habilitacao: e.target.value })}
         />
         <button onClick={() => router.push('/admin')}>Voltar</button>
         <button type="submit">Cadastrar</button>
@@ -63,7 +75,7 @@ const containerStyle = {
 
 const formStyle = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateColumns: "1fr",
   flexDirection: "column",
   gap: "1.5rem",
 };

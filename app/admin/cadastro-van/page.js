@@ -10,10 +10,27 @@ export default function CadastroVan() {
     cor: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aqui você pode implementar a lógica de envio dos dados para o backend
-    console.log(form);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+
+    try {
+      const resp = await fetch("http://localhost:3002/admin/createVan", {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (resp.status != 201) {
+        throw new Error(data.message || "Erro ao cadastrar van");
+      }
+  
+      alert("Cadastro realizado com sucesso!");
+      router.push("/admin");
+  
+    } catch (error) {
+      console.error("Erro no cadastro:", error);
+      alert("Falha ao cadastrar. Verifique os dados.");
+    }
   };
 
   const router = useRouter();
