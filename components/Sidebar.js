@@ -28,6 +28,9 @@ export default function Sidebar({ role, userData }) {
         <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-van")}>
           Cadastrar Van
         </li>
+        <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-trajeto")}>
+          Cadastrar Trajeto
+        </li>
       </ul>
     </>
   );

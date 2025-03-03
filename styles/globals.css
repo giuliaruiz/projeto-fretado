@@ -15,6 +15,9 @@
     height: 100vh;
     flex-direction: column;
     text-align: center;
+    min-height: 100vh;
+    overflow-x: hidden; /* Evita rolagem horizontal */
+    overflow-y: auto;   /* Permite rolagem apenas se necessário */
   }
   
   h1 {
@@ -27,10 +30,12 @@
     /* display: flex; */
     /* flex-wrap: wrap; */
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     max-width: 800px;
     margin: 0 auto;
+    grid-template-columns: 1fr; /* Em telas menores, os campos ficam empilhados */
+  max-height: 80vh; /* Evita que o formulário ultrapasse a tela */
+  overflow-y: auto; /* Adiciona rolagem interna se necessário */
   }
   
   input {
@@ -70,7 +75,7 @@
     background-color: #1f7f47;
   }
   
-  
+
   /* Layout centralizado */
   div {
     display: flex;
@@ -80,11 +85,13 @@
   }
   
   /* Estilo para as páginas específicas */
-  .aluno, .motorista {
+  .aluno, .motorista,.admin {
     background-color: #333;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    max-height: 80vh; /* Limita a altura */
+  overflow-y: auto; /* Adiciona rolagem interna apenas dentro do contêiner */
   }
   
   .ver-perfil-container {
@@ -107,3 +114,57 @@
     margin: 0.5rem 0;
   }
   
+  /* Barra de rolagem transparente no Chrome */
+::-webkit-scrollbar {
+  width: 8px; /* Define uma largura mínima para manter funcionalidade */
+  background: transparent; /* Fundo transparente */
+}
+
+/* Trilho da barra (o fundo onde a thumb se move) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Deixa o trilho invisível */
+}
+
+/* A alça da barra de rolagem (o que você arrasta) */
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1); /* Levemente visível */
+  border-radius: 4px;
+}
+
+/* Quando o usuário passa o mouse na barra */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2); /* Um pouco mais visível ao passar o mouse */
+}
+
+table {
+  width: 100%;
+  min-width: 800px; /* Força a tabela a ter um tamanho mínimo */
+  max-width: 100%;
+  border-collapse: separate; /* Permite que as bordas sejam visíveis */
+  border-spacing: 0;
+  border: 2px solid #434040;
+}
+
+th, td {
+  border: 1px solid #434040;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #27ae60; /* Cor diferente para o cabeçalho */
+}
+
+.tabela-container {
+  width: calc(90% - 250px); /* 90% da tela menos a largura da sidebar */
+  min-width: 800px; /* Mantém um mínimo para não ficar muito pequena */
+  max-width: 100%;
+  overflow-x: auto; /* Permite rolagem se necessário */
+}
+
+.tabela-grande {
+  width: 100%;
+  min-width: 800px;
+  max-width: 90vw;
+}
+
