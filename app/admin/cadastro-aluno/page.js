@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CadastroAluno() {
   const [form, setForm] = useState({
@@ -8,16 +8,25 @@ export default function CadastroAluno() {
     faculdade: "",
     cpf: "",
     email: "",
-    telefone: "", // Novo campo de telefone
+    telefone: "",
     cep: "",
     rua: "",
     bairro: "",
     numero: "",
-    itinerario: "", // Novo campo de itinerário
+    itinerario: "",
   });
 
+  const [itinerarios, setItinerarios] = useState([])
+
+  useEffect(() => {
+    fetch("http://localhost:3002/itinerario")
+      .then((response) => response.json())
+      .then((data) => setItinerarios(data))
+      .catch((error) => console.error("Erro ao buscar itinerários:", error));
+  }, []);
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     try {
       const resp = await fetch("http://localhost:3002/admin/createStudent", {
@@ -25,14 +34,14 @@ export default function CadastroAluno() {
         body: JSON.stringify(form),
         headers: { "Content-Type": "application/json" },
       });
-  
+
       if (resp.status != 201) {
         throw new Error("Erro ao cadastrar usuário");
       }
-  
+
       alert("Cadastro realizado com sucesso!");
       router.push("/admin");
-  
+
     } catch (error) {
       console.error("Erro no cadastro:", error);
       alert("Falha ao cadastrar. Verifique os dados.");
@@ -45,32 +54,35 @@ export default function CadastroAluno() {
     <div style={containerStyle}>
       <h1>Cadastro de Aluno</h1>
       <form onSubmit={handleSubmit} style={formStyle}>
-          {/* Informações Pessoais */}
-          <input type="text" placeholder="Nome completo" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} style={inputStyle} />
-          <input type="text" placeholder="Faculdade" value={form.faculdade} onChange={(e) => setForm({ ...form, faculdade: e.target.value })} style={inputStyle} />
-          <input type="text" placeholder="CPF" value={form.cpf} onChange={(e) => setForm({ ...form, cpf: e.target.value })} style={inputStyle} />
-          <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} style={inputStyle} />
-          <input type="text" placeholder="Telefone" value={form.telefone} onChange={(e) => setForm({ ...form, telefone: e.target.value })} style={inputStyle} />
+        {/* Informações Pessoais */}
+        <input type="text" placeholder="Nome completo" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} style={inputStyle} />
+        <input type="text" placeholder="Faculdade" value={form.faculdade} onChange={(e) => setForm({ ...form, faculdade: e.target.value })} style={inputStyle} />
+        <input type="text" placeholder="CPF" value={form.cpf} onChange={(e) => setForm({ ...form, cpf: e.target.value })} style={inputStyle} />
+        <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} style={inputStyle} />
+        <input type="text" placeholder="Telefone" value={form.telefone} onChange={(e) => setForm({ ...form, telefone: e.target.value })} style={inputStyle} />
 
-          {/* Endereço */}
-          <input type="text" placeholder="CEP" value={form.cep} onChange={(e) => setForm({ ...form, cep: e.target.value })} style={inputStyle} />
-          <input type="text" placeholder="Rua" value={form.rua} onChange={(e) => setForm({ ...form, rua: e.target.value })} style={inputStyle} />
-          <input type="text" placeholder="Bairro" value={form.bairro} onChange={(e) => setForm({ ...form, bairro: e.target.value })} style={inputStyle} />
-          <input type="text" placeholder="Número" value={form.numero} onChange={(e) => setForm({ ...form, numero: e.target.value })} style={inputStyle} />
-          
-          {/* Seleção de Itinerário */}
-          <select
+        {/* Endereço */}
+        <input type="text" placeholder="CEP" value={form.cep} onChange={(e) => setForm({ ...form, cep: e.target.value })} style={inputStyle} />
+        <input type="text" placeholder="Rua" value={form.rua} onChange={(e) => setForm({ ...form, rua: e.target.value })} style={inputStyle} />
+        <input type="text" placeholder="Bairro" value={form.bairro} onChange={(e) => setForm({ ...form, bairro: e.target.value })} style={inputStyle} />
+        <input type="text" placeholder="Número" value={form.numero} onChange={(e) => setForm({ ...form, numero: e.target.value })} style={inputStyle} />
+
+        {/* Seleção de Itinerário */}
+        <select
           value={form.itinerario}
-          onChange={(e) => setForm({ ...form, itinerario: e.target.value })}
           style={selectStyle}
-          >
+          onChange={(e) => setForm({ ...form, itinerario: e.target.value })}
+        >
           <option value="">Selecione um itinerário</option>
-          <option value="Itinerário 1">Itinerário 1</option>
-          <option value="Itinerário 2">Itinerário 2</option>
-          </select>
+          {itinerarios.map((itinerario) => (
+            <option key={itinerario.id} value={itinerario.nome}>
+              {itinerario.nome}
+            </option>
+          ))}
+        </select>
 
 
-        <button type="submit">Cadastrar</button> 
+        <button type="submit">Cadastrar</button>
         <button type="button" onClick={() => router.push('/admin')}>Voltar</button>
       </form>
     </div>

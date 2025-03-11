@@ -12,7 +12,7 @@ export default function Sidebar({ role, userData }) {
 
   const handleLogout = () => {
     // Lógica de logout (limpar tokens, contexto, etc.)
-    router.push("/login");
+    router.push("/");
   };
 
   const renderAdminSidebar = () => (
@@ -30,6 +30,12 @@ export default function Sidebar({ role, userData }) {
         </li>
         <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-trajeto")}>
           Cadastrar Trajeto
+        </li>
+        <li style={styles.item} onClick={() => handleNavigation("/admin/itinerario")}>
+          Itinerario
+        </li>
+        <li style={styles.item} onClick={() => handleNavigation("/admin/aluno")}>
+          Alunos
         </li>
       </ul>
     </>
