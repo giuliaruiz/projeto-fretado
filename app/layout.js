@@ -1,4 +1,3 @@
-// app/layout.js
 import "../styles/globals.css";
 
 export default function RootLayout({ children }) {
@@ -7,7 +6,4 @@ export default function RootLayout({ children }) {
       <body>{children}</body>
     </html>
   );
-}
-
-
-  
+}  

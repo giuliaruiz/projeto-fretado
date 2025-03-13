@@ -9,7 +9,6 @@ export default function FormLogin() {
 
     const { login } = useLogin()
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
         login(email, senha)
@@ -17,23 +16,26 @@ export default function FormLogin() {
 
     return (
         <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit} className="flex flex-col">
+            <h1 className="text-3xl mb-5">Login</h1>
+            <form
+                onSubmit={handleSubmit}
+                className="flex flex-col w-96 gap-3"
+            >
                 <input
                     type="email"
                     placeholder="Email"
                     required
-                    autoComplete="email"
                     value={email}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                     type="password"
                     placeholder="Senha"
                     required
-                    autoComplete="current-password"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
                 <button type="submit">
                     Entrar

@@ -78,7 +78,7 @@ export default function ItinerarioAdmin() {
             <select
                 value={selectedItinerario || ""}
                 onChange={(e) => setSelectedItinerario(Number(e.target.value))}
-                style={selectStyle}
+                className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
             >
                 <option value="">Selecione um itinerário</option>
                 {itinerarios.map((itinerario) => (
@@ -108,7 +108,6 @@ export default function ItinerarioAdmin() {
                                 }}
                             >
                                 <li>
-                                    <span style={circleStyle}></span>
                                     <div style={{ fontSize: "20px", margin: "0px 0px 30px 0px" }}>
                                         <strong>Início: {itiner.inicio}</strong>
                                     </div>
@@ -131,7 +130,6 @@ export default function ItinerarioAdmin() {
                                                     alignItems: "start"
                                                 }}
                                             >
-                                                <span style={circleStyle}></span>
                                                 <strong>{aluno.nome}</strong> <br />
                                                 {aluno.rua}, {aluno.numero} - {aluno.bairro}
                                             </li>
@@ -140,7 +138,7 @@ export default function ItinerarioAdmin() {
                                 ))}
 
                                 <li>
-                                    <span style={circleStyle}></span>
+                                    
                                     <div style={{ fontSize: "20px", margin: "30px 0px 0px 0px" }}>
                                         <strong>FInal: {itiner.final}</strong>
                                     </div>
@@ -167,21 +165,3 @@ const inputStyle = {
     borderRadius: "5px",
     fontSize: "1rem",
 };
-
-const selectStyle = {
-    ...inputStyle, // Copia o estilo dos inputs
-    height: "52px", // Garante que a altura seja igual à dos inputs
-    padding: "0.6rem", // Mantém a consistência do preenchimento interno
-    width: "400px", // Faz com que ocupe o mesmo espaço que os inputs
-    marginTop: "20px",
-    boxSizing: "border-box", // Garante que padding e border não alterem o tamanho
-};
-
-const circleStyle = {
-    width: "12px",
-    height: "12px",
-    backgroundColor: "#fff",
-    borderRadius: "50%",
-    marginRight: "10px",
-};
-

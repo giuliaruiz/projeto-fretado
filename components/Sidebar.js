@@ -1,160 +1,87 @@
-// components/Sidebar.js
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+import { itemAluno, itemAdmin } from "../utils/sidebarConstant";
+import React, { useEffect, useState } from "react"
+import { GetCookie } from "../actions/cookie"
+import { useRouter } from "next/navigation"
 
-export default function Sidebar({ role, userData }) {
-  const router = useRouter();
+export default function Sidebar({ role }) {
 
-  const handleNavigation = (path) => {
-    router.push(path);
-  };
+    const [perfil, setPerfil] = useState({});
+    const router = useRouter();
+    const [openMenus, setOpenMenus] = useState({});
 
-  const handleLogout = () => {
-    // Lógica de logout (limpar tokens, contexto, etc.)
-    router.push("/");
-  };
+    const handleNavigation = (path) => { router.push(path) }
+    const handleLogout = () => { router.push("/") }
 
-  const renderAdminSidebar = () => (
-    <>
-      <h2 style={styles.header}>Administrador</h2>
-      <ul style={styles.list}>
-        <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-motorista")}>
-          Cadastrar Motorista
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-aluno")}>
-          Cadastrar Aluno
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-van")}>
-          Cadastrar Van
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/admin/cadastro-trajeto")}>
-          Cadastrar Trajeto
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/admin/itinerario")}>
-          Itinerario
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/admin/aluno")}>
-          Alunos
-        </li>
-      </ul>
-    </>
-  );
+    useEffect(() => {
+        (async () => {
+            const data = await GetCookie();
+            setPerfil(data.data)
+        })();
+    }, []);
 
-  const renderMotoristaSidebar = () => (
-    <>
-      <div style={styles.userInfo}>
-        <img 
-          src="/images/rosto-menino.jpg" 
-          alt="Foto do Motorista" 
-          style={styles.avatar} 
-        />
-        <h2 style={styles.header}>{userData?.nome || "Motorista"}</h2>
-      </div>
-      <ul style={styles.list}>
-        <li style={styles.item} onClick={() => handleNavigation("/motorista/perfil")}>
-          Ver Perfil
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/motorista/itinerarios")}>
-          Itinerários
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/motorista/horarios")}>
-          Horários
-        </li>
-      </ul>
-    </>
-  );
+    const toggleMenu = (index) => {
+        setOpenMenus((prev) => ({ ...prev, [index]: !prev[index] }));
+    };
 
-  const renderAlunoSidebar = () => (
-    <>
-      <div style={styles.userInfo}>
-        <img 
-          src="/images/rosto-menina.jpg" 
-          alt="Foto do Aluno" 
-          style={styles.avatar} 
-        />
-        <h2 style={styles.header}>{userData?.nome || "Aluno"}</h2>
-      </div>
-      <ul style={styles.list}>
-        <li style={styles.item} onClick={() => handleNavigation("/aluno/perfil")}>
-          Ver Perfil
-        </li>
-        <li style={styles.item} onClick={() => handleNavigation("/aluno/fretado")}>
-          Fretado
-        </li>
-      </ul>
-    </>
-  );
+    const renderMenuItems = (menuItems) => {
+        return menuItems.map((item, index) => (
+            <li
+                key={index}
+                className="flex flex-col w-full items-start cursor-pointer p-4 border-b border-[#333]"
+            >
+                <div
+                    onClick={() => item.children ? toggleMenu(index) : handleNavigation(item.link)}
+                    className="flex flex-row gap-1 w-full justify-start"
+                >
+                    {item.icon}
+                    {item.label}
+                </div>
 
-  return (
-    <aside style={styles.sidebar}>
-      {role === "admin" && renderAdminSidebar()}
-      {role === "motorista" && renderMotoristaSidebar()}
-      {role === "aluno" && renderAlunoSidebar()}
-      <div style={styles.logoutContainer}>
-        <button onClick={handleLogout} style={styles.logoutButton}>
-          SAIR
-        </button>
-      </div>
-    </aside>
-  );
+                {item.children && openMenus[index] && (
+                    <ul
+                        className={`flex flex-col w-full p-1 gap-2 overflow-hidden max-h-0 ${openMenus[index] ? "max-h-screen" : "max-h-0"}`} >
+                        {item.children.map((child, childIndex) => (
+                            <li
+                                key={childIndex}
+                                className="cursor-pointer flex gap-2 items-center text-[#dddddd]"
+                                onClick={() => handleNavigation(child.link)}
+                            >
+                                {child.icon}
+                                {child.label}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </li >
+        ))
+    }
+
+    return (
+        <div className="w-full h-full bg-[#222] flex flex-col py-8 px-4">
+            <div className="flex flex-col items-center w-full">
+                <img
+                    src={perfil.fotoB64 || "./fotoperfil.jpg"}
+                    alt="Foto de Perfil"
+                    className="w-24 h-24 rounded-full mb-2 bg-black"
+                />
+                <h2 className="text-xl">
+                    {perfil.nome}
+                </h2>
+            </div>
+            <ul className="w-full">
+                {role === "admin" && renderMenuItems(itemAdmin)}
+                {role === "motorista" && renderMenuItems(itemMotorista)}
+                {role === "aluno" && renderMenuItems(itemAluno)}
+            </ul>
+            <div className="mt-auto w-full">
+                <button
+                    onClick={handleLogout}
+                    className="bg-[#2ecc71] text-white border-none rounded w-full cursor-pointer px-3 py-4"
+                >
+                    SAIR
+                </button>
+            </div>
+        </div>
+    );
 }
-
-const styles = {
-  sidebar: {
-    width: "250px",
-    backgroundColor: "#222",
-    color: "#fff",
-    padding: "1rem",
-    height: "100vh",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    overflowY: "auto",
-    display: "flex",
-    flexDirection: "column",
-  },
-  userInfo: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: "1rem",
-  },
-  avatar: {
-    width: "100px",
-    height: "100px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    marginBottom: "0.5rem",
-  },
-  header: {
-    fontSize: "1.2rem",
-    marginBottom: "1rem",
-    textAlign: "center",
-  },
-  list: {
-    listStyle: "none",
-    padding: 0,
-  },
-  item: {
-    marginBottom: "0.8rem",
-    cursor: "pointer",
-    padding: "0.5rem 0",
-    borderBottom: "1px solid #333",
-    textAlign: "center",
-  },
-  logoutContainer: {
-    marginTop: "auto",
-    paddingTop: "1rem",
-  },
-  logoutButton: {
-    backgroundColor: "#2ecc71",
-    color: "#fff",
-    border: "none",
-    padding: "0.8rem 1rem",
-    borderRadius: "5px",
-    cursor: "pointer",
-    width: "100%",
-  },
-};
-

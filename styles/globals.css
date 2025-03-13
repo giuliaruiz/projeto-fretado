@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Estilos globais */
 * {
     margin: 0;
@@ -18,41 +22,6 @@
     min-height: 100vh;
     overflow-x: hidden; /* Evita rolagem horizontal */
     overflow-y: auto;   /* Permite rolagem apenas se necessário */
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-  }
-
-  f/* Formulário com flexbox para disposição lado a lado */
-  form {
-    /* display: flex; */
-    /* flex-wrap: wrap; */
-    display: grid;
-    gap: 1.5rem;
-    max-width: 800px;
-    margin: 0 auto;
-    grid-template-columns: 1fr; /* Em telas menores, os campos ficam empilhados */
-  max-height: 80vh; /* Evita que o formulário ultrapasse a tela */
-  overflow-y: auto; /* Adiciona rolagem interna se necessário */
-  }
-  
-  input {
-    background-color: #222;
-    color: #fff;
-    border: 2px solid #333;
-    border-radius: 5px;
-    padding: 0.8rem;
-    font-size: 1rem;
-    width: 100%; /* use 100% ou um valor em % que faça sentido */
-    margin-bottom: 0.5rem;
-  }
-  
-  
-  input:focus {
-    border-color: #2ecc71;
-    outline: none;
   }
   
   button {
