@@ -62,9 +62,9 @@ export default function CadastroTrajeto() {
                 <input
                     type="text"
                     placeholder="Fim do Trajeto"
-                    value={form.fim}
+                    value={form.final}
                     required
-                    onChange={(e) => setForm({ ...form, fim: e.target.value })}
+                    onChange={(e) => setForm({ ...form, final: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CadastroAluno() {
     const [form, setForm] = useState({
@@ -13,7 +13,17 @@ export default function CadastroAluno() {
         rua: "",
         bairro: "",
         numero: "",
+        itinerario: "",
     });
+
+    const [itinerarios, setItinerarios] = useState([])
+
+    useEffect(() => {
+        fetch("http://localhost:3002/itinerario")
+            .then((response) => response.json())
+            .then((data) => setItinerarios(data))
+            .catch((error) => console.error("Erro ao buscar itinerários:", error));
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,7 +52,7 @@ export default function CadastroAluno() {
     return (
         <div className="px-16 py-8 bg-[#333] rounded-lg w-[700px]">
             <h1 className="text-3xl mb-5">
-                Cadastrar Aluno
+                Editar Perfil
             </h1>
             <form
                 onSubmit={handleSubmit}
@@ -54,7 +64,7 @@ export default function CadastroAluno() {
                     value={form.nome}
                     required
                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                    className="bg-[#222] text-white border-2 col-span-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
                 <input
@@ -127,6 +137,19 @@ export default function CadastroAluno() {
                     onChange={(e) => setForm({ ...form, numero: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
+
+                <select
+                    value={form.itinerario}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                    onChange={(e) => setForm({ ...form, itinerario: e.target.value })}
+                >
+                    <option value="">Selecione um itinerário</option>
+                    {itinerarios.map((itinerario) => (
+                        <option key={itinerario.id} value={itinerario.id}>
+                            {itinerario.nome}
+                        </option>
+                    ))}
+                </select>
 
                 <button type="submit">Cadastrar</button>
 

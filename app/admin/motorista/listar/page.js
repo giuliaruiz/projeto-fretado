@@ -6,8 +6,12 @@ export default function ListaMotorista() {
     const [motoristas, setMotoristas] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [itinerarios, setItinerarios] = useState({});
 
-    useEffect(() => { fetchMotorista() }, [])
+    useEffect(() => {
+        fetchMotorista()
+    }, [])
+
 
     const fetchMotorista = async () => {
         setLoading(true);
@@ -19,6 +23,8 @@ export default function ListaMotorista() {
 
             const data = await response.json();
             setMotoristas(data);
+
+            fetchItinerarios(data);
         } catch (err) {
             setError("Erro ao carregar motoristas.");
         } finally {
@@ -26,8 +32,45 @@ export default function ListaMotorista() {
         }
     };
 
-    const excluirMotorista = async (id) => {
+    const fetchItinerarios = async (motoristas) => {
+        const itinerarioMap = {};
+
+        await Promise.all(
+            motoristas.map(async (motorista) => {
+                if (motorista.itinerario) {
+                    try {
+                        const response = await fetch(`http://localhost:3002/itinerario/${motorista.itinerario}`);
+                        if (!response.ok) throw new Error("Erro ao buscar itinerario");
+                        const data = await response.json();
+                        itinerarioMap[motorista.itinerario] = data.nome;
+                    } catch (err) {
+                        itinerarioMap[motorista.itinerario] = "Erro ao carregar";
+                    }
+                }
+            })
+        );
+
+        setItinerarios(itinerarioMap);
+    };
+
+    const excluirMotorista = async (id, idItinerario) => {
+
         if (!confirm("Tem certeza que deseja excluir este motorista?")) return;
+
+        if (idItinerario) {
+            try {
+                const response = await fetch(`http://localhost:3002/itinerario/${idItinerario}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ motorista: null }),
+                });
+
+                if (!response.ok) throw new Error("Erro ao salvar");
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
 
         try {
             const response = await fetch(`http://localhost:3002/driver/${id}`, {
@@ -35,7 +78,6 @@ export default function ListaMotorista() {
             });
 
             if (!response.ok) throw new Error("Erro ao excluir motorista");
-
             setMotoristas(motoristas.filter(motorista => motorista.id !== id));
         } catch (err) {
             setError("Erro ao excluir motorista.");
@@ -43,7 +85,7 @@ export default function ListaMotorista() {
     };
 
     return (
-        <div className="w-[500px] p-5 bg-[#333] rounded-lg text-center text-white">
+        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
             <h1 className="text-3xl mb-5">
                 Listar Motorista
             </h1>
@@ -60,10 +102,10 @@ export default function ListaMotorista() {
                         <div className="flex flex-col justify-start items-start">
                             <span className="text-lg">{motorista.nome}</span>
                             <span className="text-sm text-slate-300">{motorista.email}</span>
-                            <span className="text-sm text-slate-300">Itinerario: {motorista.itinerario ? motorista.itinerario : "Nenhum Itinerario"}</span>
+                            <span className="text-sm text-slate-300">Itinerario:  {itinerarios[motorista.itinerario] || "Nenhum trajeto"}</span>
                         </div>
                         <Trash2
-                            onClick={() => excluirMotorista(motorista.id)}
+                            onClick={() => excluirMotorista(motorista.id, motorista.itinerario)}
                             color="red"
                             cursor={"pointer"}
                         />

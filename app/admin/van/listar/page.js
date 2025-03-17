@@ -8,6 +8,7 @@ export default function ListaVan() {
     const [error, setError] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [vanSelecionado, setVanSelecionado] = useState(null);
+    const [itinerarios, setItinerarios] = useState({});
     const [form, setForm] = useState({
         placa: vanSelecionado?.placa || "",
         modelo: vanSelecionado?.modelo ||"",
@@ -37,6 +38,8 @@ export default function ListaVan() {
 
             const data = await response.json();
             setVans(data);
+
+            fetchItinerarios(data);
         } catch (err) {
             setError("Erro ao carregar vans.");
         } finally {
@@ -44,8 +47,43 @@ export default function ListaVan() {
         }
     }
 
-    const excluirVan = async (id) => {
+    const fetchItinerarios = async (vans) => {
+        const itinerarioMap = {};
+
+        await Promise.all(
+            vans.map(async (van) => {
+                if (van.itinerario) {
+                    try {
+                        const response = await fetch(`http://localhost:3002/itinerario/${van.itinerario}`);
+                        if (!response.ok) throw new Error("Erro ao buscar itinerario");
+                        const data = await response.json();
+                        itinerarioMap[van.itinerario] = data.nome;
+                    } catch (err) {
+                        itinerarioMap[van.itinerario] = "Erro ao carregar";
+                    }
+                }
+            })
+        );
+
+        setItinerarios(itinerarioMap);
+    };
+
+    const excluirVan = async (id, idItinerario) => {
         if (!confirm("Tem certeza que deseja excluir esta van?")) return;
+        if (idItinerario) {
+            try {
+                const response = await fetch(`http://localhost:3002/itinerario/${idItinerario}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ van: null }),
+                });
+
+                if (!response.ok) throw new Error("Erro ao salvar");
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
 
         try {
             const response = await fetch(`http://localhost:3002/van/${id}`, {
@@ -72,7 +110,6 @@ export default function ListaVan() {
 
     const handleSave = async (id) => {
         try {
-            console.log(id)
             const response = await fetch(`http://localhost:3002/van/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -94,7 +131,7 @@ export default function ListaVan() {
     };
 
     return (
-        <div className="w-[500px] p-5 bg-[#333] rounded-lg text-center text-white">
+        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
             <h1 className="text-3xl mb-5">
                 Listar Van
             </h1>
@@ -111,7 +148,7 @@ export default function ListaVan() {
                         <div className="flex flex-col justify-start items-start">
                             <span className="text-lg">{van.modelo} ({van.placa})</span>
                             <span className="text-sm text-slate-300">Capacidade: {van.capacidade}</span>
-                            <span className="text-sm text-slate-300">Itinerario: {van.itinerario ? van.itinerario : "Nenhum Itinerario"}</span>
+                            <span className="text-sm text-slate-300">Itinerario:  {itinerarios[van.itinerario] || "Nenhum trajeto"}</span>
 
                         </div>
                         <div className="flex flex-row gap-5 justify-center">
@@ -121,7 +158,7 @@ export default function ListaVan() {
                                 color="#1e0bff"
                             />
                             <Trash2
-                                onClick={() => excluirVan(van.id)}
+                                onClick={() => excluirVan(van.id, van.itinerario)}
                                 color="#ff3421"
                                 cursor={"pointer"}
                             />

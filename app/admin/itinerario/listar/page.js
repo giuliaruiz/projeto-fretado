@@ -1,6 +1,7 @@
 "use client"
-import { useEffect, useState } from "react";
+import { use, useEffect, useState, useSyncExternalStore } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { Check, Menu, SendHorizontal, X } from "lucide-react";
 
 
 export default function ItinerarioAdmin() {
@@ -10,6 +11,9 @@ export default function ItinerarioAdmin() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [itiner, setItiner] = useState(null)
+
+    const [motorista, setMotorista] = useState(null)
+    const [van, setVan] = useState(null)
 
     useEffect(() => {
         const fetchItinerarios = async () => {
@@ -29,11 +33,27 @@ export default function ItinerarioAdmin() {
         if (!selectedItinerario) return;
 
         setLoading(true);
+        // const fetchAlunos = async () => {
+        //     try {
+        //         const response = await fetch(`http://localhost:3002/itinerario/aluno/${selectedItinerario}`);
+        //         if (!response.ok) throw new Error("Erro ao buscar alunos");
+        //         const data = await response.json();
+        //         setAlunos(data);
+        //     } catch (err) {
+        //         setError("Erro ao carregar alunos.");
+        //     } finally {
+        //         setLoading(false);
+        //     }
+        // };
+
         const fetchAlunos = async () => {
             try {
                 const response = await fetch(`http://localhost:3002/itinerario/aluno/${selectedItinerario}`);
                 if (!response.ok) throw new Error("Erro ao buscar alunos");
-                const data = await response.json();
+                let data = await response.json();
+        
+                data = data.sort((a, b) => a.ordem - b.ordem);
+        
                 setAlunos(data);
             } catch (err) {
                 setError("Erro ao carregar alunos.");
@@ -41,7 +61,7 @@ export default function ItinerarioAdmin() {
                 setLoading(false);
             }
         };
-
+        
         const fetchItinerario = async () => {
             try {
                 const response = await fetch(`http://localhost:3002/itinerario/${selectedItinerario}`);
@@ -58,8 +78,42 @@ export default function ItinerarioAdmin() {
         fetchAlunos();
     }, [selectedItinerario]);
 
+    useEffect(() => {
+        const fetchMotorista = async () => {
 
+            if (itiner?.motorista == null) return
+            try {
+                const response = await fetch(`http://localhost:3002/driver/${itiner.motorista}`);
+                if (!response.ok) throw new Error("Erro ao buscar motorista");
+                const data = await response.json();
+                setMotorista(data);
+            } catch (err) {
+                setError("Erro ao carregar motorista.");
+            } finally {
+                setLoading(false);
+            }
 
+        };
+
+        const fetchVan = async () => {
+
+            if (itiner?.van == null) return
+
+            try {
+                const response = await fetch(`http://localhost:3002/van/${itiner.van}`);
+                if (!response.ok) throw new Error("Erro ao buscar van");
+                const data = await response.json();
+                setVan(data);
+            } catch (err) {
+                setError("Erro ao carregar van.");
+            } finally {
+                setLoading(false);
+            }
+
+        };
+        fetchMotorista()
+        fetchVan()
+    }, [itiner])
 
     const handleDragEnd = (result) => {
         if (!result.destination) return;
@@ -68,19 +122,41 @@ export default function ItinerarioAdmin() {
         const [movedAluno] = updatedAlunos.splice(result.source.index, 1);
         updatedAlunos.splice(result.destination.index, 0, movedAluno);
 
-        setAlunos(updatedAlunos);
+        const newAlunos = updatedAlunos.map((aluno, index) => ({
+            ...aluno,
+            ordem: index + 1,
+        }));
+
+        setAlunos(newAlunos);
+        console.log(newAlunos)
+    };
+
+    const salvarOrdenacao = async () => {
+        console.log(alunos)
+        try {
+            await fetch(`http://localhost:3002/student/aluno/ordenar`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ alunos }),
+            });
+            alert("Ordenação salva com sucesso!");
+        } catch (error) {
+            alert("Erro ao salvar ordenação.");
+        }
     };
 
     return (
-        <div style={{ maxWidth: "500px", margin: "40px auto", textAlign: "center" }}>
-            <h2>Selecionar Itinerário</h2>
+        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
+            <h1 className="text-3xl mb-5">
+                Listar Trajetos
+            </h1>
 
             <select
                 value={selectedItinerario || ""}
                 onChange={(e) => setSelectedItinerario(Number(e.target.value))}
                 className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
             >
-                <option value="">Selecione um itinerário</option>
+                <option value="">Selecione um itinerário para Listar</option>
                 {itinerarios.map((itinerario) => (
                     <option key={itinerario.id} value={itinerario.id}>
                         {itinerario.nome}
@@ -92,25 +168,37 @@ export default function ItinerarioAdmin() {
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             {selectedItinerario && !loading && alunos.length > 0 && (
+
                 <DragDropContext onDragEnd={handleDragEnd}>
+
                     <Droppable droppableId="alunos">
+
                         {(provided) => (
-
-
                             <ul
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
-                                style={{
-                                    listStyle: "none",
-                                    padding: "20px 0px",
-                                    width: "400px",
-                                    borderRadius: "10px",
-                                }}
+                                className="w-full mt-5 flex flex-col gap-2"
                             >
-                                <li>
-                                    <div style={{ fontSize: "20px", margin: "0px 0px 30px 0px" }}>
-                                        <strong>Início: {itiner.inicio}</strong>
+                                <li className="grid grid-cols-2 p-4 gap-3 rounded-lg bg-[#222] mb-3">
+
+                                    <div className="flex flex-row gap-4 justify-start">
+                                        <SendHorizontal color="green" />
+                                        Início: {itiner.inicio}
                                     </div>
+
+                                    <div className="flex flex-row gap-4 justify-start">
+                                        Van: {van ? van.placa : "Nenhuma van"}
+                                    </div>
+
+                                    <div className="flex flex-row gap-4 justify-start">
+                                        <SendHorizontal color="#ff3421" />
+                                        Final: {itiner.final}
+                                    </div>
+
+                                    <div className="flex flex-row gap-4 justify-start">
+                                        Motorista: {motorista ? motorista.nome : "Nenhum motorista"}
+                                    </div>
+
                                 </li>
 
                                 {alunos.map((aluno, index) => (
@@ -120,29 +208,21 @@ export default function ItinerarioAdmin() {
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                style={{
-                                                    padding: "10px",
-                                                    margin: "5px",
-                                                    background: "#222",
-                                                    color: "#fff",
-                                                    borderRadius: "10px",
-                                                    ...provided.draggableProps.style,
-                                                    alignItems: "start"
-                                                }}
+                                                className="flex justify-between items-center bg-[#222] px-4 py-2 rounded-lg text-lg"
                                             >
-                                                <strong>{aluno.nome}</strong> <br />
-                                                {aluno.rua}, {aluno.numero} - {aluno.bairro}
+                                                <div className="flex flex-row justify-start items-center gap-3">
+                                                    <Menu />
+                                                    <div className="flex flex-col justify-start items-start">
+                                                        <span className="text-lg">{aluno.nome}</span>
+                                                        <span className="text-sm text-slate-300">{aluno.rua}, {aluno.bairro} - {aluno.numero}</span>
+                                                    </div>
+                                                </div>
+                                                {aluno.presenca ? <Check color="green" /> : <X color={"#ff3421"} />}
                                             </li>
                                         )}
                                     </Draggable>
                                 ))}
 
-                                <li>
-                                    
-                                    <div style={{ fontSize: "20px", margin: "30px 0px 0px 0px" }}>
-                                        <strong>FInal: {itiner.final}</strong>
-                                    </div>
-                                </li>
                                 {provided.placeholder}
                             </ul>
                         )}
@@ -150,18 +230,13 @@ export default function ItinerarioAdmin() {
                 </DragDropContext>
             )}
 
-            {selectedItinerario && alunos.length === 0 && !loading && <p>Nenhum aluno encontrado.</p>}
+            <button
+                onClick={salvarOrdenacao}
+                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg"
+            >
+                Salvar Ordem
+            </button>
+
         </div>
     );
 }
-
-const inputStyle = {
-    flex: "1 1 48%",
-    minWidth: "280px",
-    padding: "0.9rem",
-    backgroundColor: "#222",
-    color: "#fff",
-    border: "2px solid #333",
-    borderRadius: "5px",
-    fontSize: "1rem",
-};

@@ -10,7 +10,9 @@ export default function ListaAlunos() {
     const [modalOpen, setModalOpen] = useState(false);
     const [alunoSelecionado, setAlunoSelecionado] = useState(null);
     const [itinerarios, setItinerarios] = useState([])
-    const [novoItinerario, setNovoItinerario] = useState("");
+    const [novoItinerario, setNovoItinerario] = useState(0);
+
+    const [itinerarioGet, setItinerarioGet] = useState({});
 
     useEffect(() => { fetchAlunos() }, [])
 
@@ -32,11 +34,33 @@ export default function ListaAlunos() {
 
             const data = await response.json();
             setAlunos(data);
+            fetchItinerarios(data)
         } catch (err) {
             setError("Erro ao carregar alunos.");
         } finally {
             setLoading(false);
         }
+    };
+
+    const fetchItinerarios = async (alunos) => {
+        const itinerarioMap = {};
+
+        await Promise.all(
+            alunos.map(async (aluno) => {
+                if (aluno.itinerario) {
+                    try {
+                        const response = await fetch(`http://localhost:3002/itinerario/${aluno.itinerario}`);
+                        if (!response.ok) throw new Error("Erro ao buscar itinerario");
+                        const data = await response.json();
+                        itinerarioMap[aluno.itinerario] = data.nome;
+                    } catch (err) {
+                        itinerarioMap[aluno.itinerario] = "Erro ao carregar";
+                    }
+                }
+            })
+        );
+
+        setItinerarioGet(itinerarioMap);
     };
 
     const excluirAluno = async (id) => {
@@ -70,17 +94,18 @@ export default function ListaAlunos() {
             const response = await fetch(`http://localhost:3002/student/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ itinerario: novoItinerario }),
+                body: JSON.stringify({ itinerario: Number(novoItinerario) }),
             });
 
             if (!response.ok) throw new Error("Erro ao salvar perfil");
 
             setAlunos(alunos.map(aluno =>
                 aluno.id === alunoSelecionado.id
-                    ? { ...aluno, itinerario: novoItinerario }
+                    ? { ...aluno, itinerario: Number(novoItinerario) }
                     : aluno
             ));
 
+            fetchAlunos()
             fecharModal();
         } catch (err) {
             console.error(err);
@@ -88,7 +113,7 @@ export default function ListaAlunos() {
     };
 
     return (
-        <div className="w-[500px] p-5 bg-[#333] rounded-lg text-center text-white">
+        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
             <h1 className="text-3xl mb-5">
                 Listar Alunos
             </h1>
@@ -105,7 +130,7 @@ export default function ListaAlunos() {
                         <div className="flex flex-col justify-start items-start">
                             <span className="text-lg">{aluno.nome}</span>
                             <span className="text-sm text-slate-300">{aluno.rua}, {aluno.bairro} - {aluno.numero}</span>
-                            <span className="text-sm text-slate-300">Itinerario: {aluno.itinerario ? aluno.itinerario : "Nenhum Itinerario"}</span>
+                            <span className="text-sm text-slate-300">Itinerario: {itinerarioGet[aluno.itinerario] || "Nenhum Itinerario"}</span>
                         </div>
                         <div className="flex flex-row gap-5 justify-center">
                             <Pencil
@@ -142,7 +167,7 @@ export default function ListaAlunos() {
                         >
                             <option value="">Selecione um itinerário</option>
                             {itinerarios.map((itinerario) => (
-                                <option key={itinerario.id} value={itinerario.nome}>
+                                <option key={itinerario.id} value={itinerario.id}>
                                     {itinerario.nome}
                                 </option>
                             ))}

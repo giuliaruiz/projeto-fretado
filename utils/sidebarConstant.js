@@ -1,18 +1,27 @@
-import { User, Truck, UserRoundPlus, List, MapPinPlus, MapPin, House } from "lucide-react"
+import { User, Truck, UserRoundPlus, List, MapPinPlus, MapPin, House, Pencil } from "lucide-react"
 
 export const defaultIconProps = {
     className: "me-1",
     size: 18
 }
-    // < li style = { styles.item } onClick = {() => handleNavigation("/motorista/perfil")}>
-    //     Ver Perfil
-    //             </li >
-    //             <li style={styles.item} onClick={() => handleNavigation("/motorista/itinerarios")}>
-    //                 Itinerários
-    //             </li>
-    //             <li style={styles.item} onClick={() => handleNavigation("/motorista/horarios")}>
-    //                 Horários
-    //             </li>
+
+export const itemMotorista = [
+    {
+        link: "/motorista",
+        label: "Home",
+        icon: <House {...defaultIconProps} />,
+    },
+    {
+        link: "/motorista/perfil",
+        label: "Ver Perfil",
+        icon: <User {...defaultIconProps} />,
+    },
+    {
+        link: "/motorista/fretado",
+        label: "Itinerario",
+        icon: <Truck {...defaultIconProps} />,
+    },
+]
 
 export const itemAdmin = [
     {
@@ -86,16 +95,31 @@ export const itemAdmin = [
                 label: "Cadastrar Trajeto",
                 icon: <MapPinPlus {...defaultIconProps} />
             },
+            {
+                link: "/admin/itinerario/editar",
+                label: "Editar Trajeto",
+                icon: <Pencil {...defaultIconProps} />
+            },
         ]
     },
 ]
 
 export const itemAluno = [
     {
+        link: "/aluno",
+        label: "Home",
+        icon: <House {...defaultIconProps} />,
+    },
+    {
         link: "/aluno/perfil",
         label: "Ver Perfil",
         icon: <User {...defaultIconProps} />,
     },
+    // {
+    //     link: "/aluno/editar",
+    //     label: "Editar Perfil",
+    //     icon: <Pencil {...defaultIconProps} />,
+    // },
     {
         link: "/aluno/fretado",
         label: "Fretado",
