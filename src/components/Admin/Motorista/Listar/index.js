@@ -12,6 +12,10 @@ export default function ListarMotorista() {
                 Listar Motorista
             </h1>
 
+            {motoristas.length == 0 && (
+                <div>Sem nenhum dado</div>
+            )}
+
             <ul className="w-full  max-h-[70vh] overflow-y-auto">
                 {motoristas.map((motorista) => (
                     <li

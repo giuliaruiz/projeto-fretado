@@ -1,54 +1,55 @@
 "use client"
 import { Pencil, Trash2 } from "lucide-react"
-import { useAluno } from "./hooks/useAluno"
+import { useVan } from "./hooks/useVan"
 import { useState } from "react"
 import Modal from "./modal"
 
-export default function ListaAlunos() {
+export default function ListarVan() {
 
-    const [alunoSelecionado, setAlunoSelecionado] = useState(null)
+    const [vanSelecionado, setVanSelecionado] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
-    const { alunos, setAlunos, itinerarioByAluno, excluirAluno } = useAluno()
+    const { vans, setVans, itinerarioByVan, excluirVan } = useVan()
 
-    const abrirModal = (aluno) => {
-        setAlunoSelecionado(aluno)
+    const abrirModal = (van) => {
+        setVanSelecionado(van)
         setModalOpen(true)
     }
 
     const fecharModal = () => {
         setModalOpen(false)
-        setAlunoSelecionado(null)
+        setVanSelecionado(null)
     }
 
     return (
         <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
             <h1 className="text-3xl mb-5">
-                Listar Alunos
+                Listar Van
             </h1>
 
-            {alunos.length == 0 && (
+            {vans.length == 0 && (
                 <div>Sem nenhum dado</div>
             )}
 
-            <ul className="w-full  max-h-[70vh] overflow-y-auto">
-                {alunos && alunos.map((aluno) => (
+            <ul className="w-full">
+                {vans.map((van) => (
                     <li
-                        key={aluno.id}
+                        key={van.id}
                         className="flex justify-between items-center bg-[#222] px-4 py-2 rounded-lg text-lg mb-3"
                     >
                         <div className="flex flex-col justify-start items-start">
-                            <span className="text-lg">{aluno.nome}</span>
-                            <span className="text-sm text-slate-300">{aluno.rua}, {aluno.bairro} - {aluno.numero}</span>
-                            <span className="text-sm text-slate-300">Itinerario: {itinerarioByAluno[aluno.itinerario] || "Nenhum Itinerario"}</span>
+                            <span className="text-lg">{van.modelo} ({van.placa})</span>
+                            <span className="text-sm text-slate-300">Capacidade: {van.capacidade}</span>
+                            <span className="text-sm text-slate-300">Itinerario:  {itinerarioByVan[van.itinerario] || "Nenhum trajeto"}</span>
+
                         </div>
                         <div className="flex flex-row gap-5 justify-center">
                             <Pencil
-                                onClick={() => abrirModal(aluno)}
+                                onClick={() => abrirModal(van)}
                                 cursor={"pointer"}
                                 color="#1e0bff"
                             />
                             <Trash2
-                                onClick={() => excluirAluno(aluno.id)}
+                                onClick={() => excluirVan(van.id, van.itinerario)}
                                 color="#ff3421"
                                 cursor={"pointer"}
                             />
@@ -57,13 +58,14 @@ export default function ListaAlunos() {
                 ))}
             </ul>
 
-            {modalOpen && alunoSelecionado && (
+            {modalOpen && vanSelecionado && (
                 <Modal
-                    aluno={alunoSelecionado}
+                    van={vanSelecionado}
                     fecharModal={fecharModal}
-                    setAlunos={setAlunos}
-                    alunos={alunos}
-                />)}
+                    setVans={setVans}
+                    vans={vans}
+                />
+            )}
         </div>
-    )
+    );
 }
