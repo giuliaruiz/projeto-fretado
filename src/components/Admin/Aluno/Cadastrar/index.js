@@ -1,8 +1,8 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+"use client"
+import { useAluno } from "./hooks/useAluno"
+import { useState } from "react"
 
-export default function CadastroAluno() {
+export default function CadastrarAluno() {
     const [form, setForm] = useState({
         nome: "",
         faculdade: "",
@@ -13,31 +13,14 @@ export default function CadastroAluno() {
         rua: "",
         bairro: "",
         numero: "",
-    });
+    })
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const resp = await fetch("http://localhost:3002/admin/createStudent", {
-                method: "POST",
-                body: JSON.stringify(form),
-                headers: { "Content-Type": "application/json" },
-            });
+    const { addAluno } = useAluno()
 
-            if (resp.status != 201) {
-                throw new Error("Erro ao cadastrar usuário");
-            }
-
-            alert("Cadastro realizado com sucesso!");
-            router.push("/admin");
-
-        } catch (error) {
-            console.error("Erro no cadastro:", error);
-            alert("Falha ao cadastrar. Verifique os dados.");
-        }
-    };
-
-    const router = useRouter();
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        addAluno(form)
+    }
 
     return (
         <div className="px-16 py-8 bg-[#333] rounded-lg w-[700px]">

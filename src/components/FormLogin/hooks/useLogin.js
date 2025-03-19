@@ -1,9 +1,9 @@
-import { useRouter } from "next/navigation";
-import { CreateCookie } from "../../../actions/cookie";
+import { useRouter } from "next/navigation"
+import { CreateCookie } from "../../../../actions/cookie"
 
 export const useLogin = () => {
 
-    const router = useRouter();
+    const router = useRouter()
 
     const login = async (email, senha) => {
         try {
