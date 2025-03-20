@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Switch from "react-switch";
-import { GetCookie } from "../../actions/cookie";
+import { GetCookie } from "../../../actions/cookie";
+import MapaMotorista from "../../components/MapaMotorista";
 
 export default function Aluno() {
 
@@ -36,13 +37,17 @@ export default function Aluno() {
     }, [handleChange]);
 
     return (
-        <div>
+        <div className="w-full">
             <h1>Bem-vindo, Aluno!</h1>
             <p>Esta é a página exclusiva para alunos.</p>
 
             <div className="mt-4 flex gap-2">
                 <span>Você irá para a aula hoje ?</span>
                 <Switch onChange={handleChange} checked={checked} />
+            </div>
+
+            <div className="w-full">
+                <MapaMotorista />
             </div>
         </div>
     );

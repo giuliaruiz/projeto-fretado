@@ -71,3 +71,23 @@ export async function deleteAluno(id) {
         throw `Erro durante a requisição: ${err}`
     }
 }
+
+export async function updateOrdenacaoAluno(alunos) {
+    try {
+        const options = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ alunos }),
+        }
+        const resp = await fetch(`http://localhost:3002/student/aluno/ordenar`, options);
+
+        if (resp.status == 200) {
+            alert("Atualizado com sucesso!")
+            return true
+        } else {
+            throw new Error("Erro ao atualizar.")
+        }
+    } catch (err) {
+        throw `Erro durante a requisição: ${err}`
+    }
+}
