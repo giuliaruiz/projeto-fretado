@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Check, Menu, SendHorizontal, X } from "lucide-react";
-import { GetCookie } from "../../../actions/cookie";
+import { GetCookie } from "../../../../actions/cookie";
+import { getItinerariosByAluno } from "../../../controllers/itinerario";
 
 
 export default function ItinerarioAdmin() {
@@ -35,23 +36,14 @@ export default function ItinerarioAdmin() {
     }, []);
 
     useEffect(() => {
-        if (!itinerario) return;
-
-        setLoading(true);
-        const fetchAlunos = async () => {
-            try {
-                const response = await fetch(`http://localhost:3002/itinerario/aluno/${itinerario.id}`);
-                if (!response.ok) throw new Error("Erro ao buscar alunos");
-                const data = await response.json();
-                setAlunos(data);
-            } catch (err) {
-                setError("Erro ao carregar alunos.");
-            } finally {
-                setLoading(false);
+        if (!itinerario) return
+        (
+            async () => {
+                const data = await getItinerariosByAluno(itinerario.id)
+                setAlunos(data)
             }
-        };
+        )()
 
-        fetchAlunos();
     }, [itinerario]);
 
     // useEffect(() => {

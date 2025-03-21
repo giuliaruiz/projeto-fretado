@@ -1,10 +1,14 @@
-"use client";
+import MapaMotorista from "@/components/MapaMotorista";
 
 export default function Motorista() {
-  return (
-    <div>
-      <h1>Bem-vindo, Motorista!</h1>
-      <p>Esta é a página exclusiva para motoristas.</p>
-    </div>
-  );
+    return (
+        <div className="w-full h-full">
+            <h1 className="text-2xl mb-2">
+                Bem-vindo, Motorista!
+            </h1>
+            <div className="w-full h-full">
+                <MapaMotorista />
+            </div>
+        </div>
+    );
 }

@@ -1,7 +1,7 @@
 "use client"
 import { SendHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { GetCookie } from "../../../actions/cookie";
+import { GetCookie } from "../../../../actions/cookie";
 
 export default function FretadoAluno() {
 

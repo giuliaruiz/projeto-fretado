@@ -1,14 +1,14 @@
 "use client";
+import MapaMotorista from "@/components/MapaMotorista";
+import { GetCookie } from "../../../actions/cookie";
 import React, { useEffect, useState } from "react";
 import Switch from "react-switch";
-import { GetCookie } from "../../../actions/cookie";
-import MapaMotorista from "../../components/MapaMotorista";
+import { getItinerariosByAluno } from "../../controllers/itinerario";
 
 export default function Aluno() {
 
     const [checked, setChecked] = useState(true);
-    const [teste, setTeste] = useState(true);
-
+    const [studentAddresses, setStudentAddresses] = useState([])
 
     const handlePresenca = async (id) => {
         try {
@@ -25,6 +25,15 @@ export default function Aluno() {
         }
     };
 
+    // const alunosEnderecos = async (id) => {
+    //     const itinerarios = await getItinerariosByAluno(id)
+
+
+    //     const data = itinerarios.map(aluno => `${aluno.rua}, ${aluno.numero}, ${aluno.bairro}`);
+    //     console.log(data)
+    //     setStudentAddresses(data)
+    // };
+
     const handleChange = (nextChecked) => {
         setChecked(nextChecked);
     };
@@ -33,20 +42,21 @@ export default function Aluno() {
         (async () => {
             const data = await GetCookie();
             handlePresenca(data.data.id)
+            
         })();
     }, [handleChange]);
 
     return (
-        <div className="w-full">
-            <h1>Bem-vindo, Aluno!</h1>
-            <p>Esta é a página exclusiva para alunos.</p>
-
-            <div className="mt-4 flex gap-2">
+        <div className="w-full h-full">
+            <h1 className="text-2xl mb-2">
+                Bem-vindo, Aluno!
+            </h1>
+            <div className="flex gap-2 mb-4">
                 <span>Você irá para a aula hoje ?</span>
                 <Switch onChange={handleChange} checked={checked} />
             </div>
 
-            <div className="w-full">
+            <div className="w-full h-full">
                 <MapaMotorista />
             </div>
         </div>

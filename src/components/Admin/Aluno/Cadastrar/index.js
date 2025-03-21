@@ -13,14 +13,31 @@ export default function CadastrarAluno() {
         rua: "",
         bairro: "",
         numero: "",
-    })
+        fotoB64: "",
+    });
 
-    const { addAluno } = useAluno()
+    const { addAluno } = useAluno();
+
+    // Função para converter imagem em Base64
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0]; // Captura o arquivo
+
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file); // Converte para Base64
+            reader.onload = () => {
+                setForm({ ...form, fotoB64: reader.result }); // Salva no estado
+            };
+            reader.onerror = (error) => {
+                console.error("Erro ao converter imagem:", error);
+            };
+        }
+    };
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        addAluno(form)
-    }
+        e.preventDefault();
+        addAluno(form)  // Descomente para salvar no banco
+    };
 
     return (
         <div className="px-16 py-8 bg-[#333] rounded-lg w-[700px]">
@@ -55,6 +72,15 @@ export default function CadastrarAluno() {
                     value={form.cpf}
                     required
                     onChange={(e) => setForm({ ...form, cpf: e.target.value })}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                />
+
+                {/* Input para Upload da Imagem */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    required
+                    onChange={handleImageUpload}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
@@ -111,10 +137,13 @@ export default function CadastrarAluno() {
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
-                <button type="submit">Cadastrar</button>
+                <button type="submit" className="bg-green-500 text-white p-3 rounded-lg">
+                    Cadastrar
+                </button>
 
                 <button
                     type="button"
+                    className="bg-red-500 text-white p-3 rounded-lg"
                     onClick={() => router.push('/admin')}
                 >
                     Voltar
