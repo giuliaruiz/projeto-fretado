@@ -2,7 +2,6 @@
 import { cookies } from "next/headers"
 
 export async function CreateCookie(data) {
-    console.log("Aqui foi")
     const cookie = await cookies()
     cookie.set("auth", JSON.stringify(data))
 }

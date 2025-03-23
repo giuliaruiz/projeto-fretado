@@ -1,0 +1,49 @@
+import L from "leaflet";
+
+export const useAlunoLoc = (mapRef) => {
+
+    const marcadorAluno = async (alunosEnderecos) => {
+
+        if (!mapRef.current) return;
+
+        const user_agent = "Geopy Library";
+        const baseUrl = "https://nominatim.openstreetmap.org/search";
+
+        for (const item of alunosEnderecos) {
+            const query = new URLSearchParams({
+                q: item.endereco,
+                format: 'json',
+                addressdetails: 1,
+                limit: 1,
+            });
+            try {
+                const resp = await fetch(`${baseUrl}?${query.toString()}`, {
+                    method: 'GET',
+                    headers: { 'User-Agent': user_agent }
+                });
+
+                const data = await resp.json();
+
+                if (data.length > 0) {
+                    const loc = data[0];
+                    const lat = parseFloat(loc.lat);
+                    const lon = parseFloat(loc.lon);
+
+                    L.marker([lat, lon], {
+                        icon: L.icon({
+                            iconUrl: item.foto,
+                            iconSize: [30, 30],
+                        }),
+                    }).addTo(mapRef.current).bindPopup(`${item.nome} <br> ${item.endereco}`);
+
+                } else {
+                    console.log(`Nenhum resultado encontrado para o local: `, error);
+                }
+            } catch (error) {
+                console.error(`Erro ao buscar localização para o local: `, error);
+            }
+        }
+    }
+
+    return { marcadorAluno }
+}

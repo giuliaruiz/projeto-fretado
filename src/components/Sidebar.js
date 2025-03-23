@@ -1,7 +1,7 @@
 "use client";
 import { itemAluno, itemAdmin, itemMotorista } from "../utils/sidebarConstant";
 import React, { useEffect, useState } from "react"
-import { GetCookie } from "../../actions/cookie"
+import { GetCookie } from "@/actions/cookie"
 import { useRouter } from "next/navigation"
 
 export default function Sidebar({ role }) {

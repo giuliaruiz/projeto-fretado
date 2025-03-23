@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Check, Menu, SendHorizontal, X } from "lucide-react";
-import { GetCookie } from "../../../../actions/cookie";
-import { getItinerariosByAluno } from "../../../controllers/itinerario";
+import { GetCookie } from "@/actions/cookie";
+import { getItinerariosByAluno } from "@/controllers/itinerario";
 
 
 export default function ItinerarioAdmin() {

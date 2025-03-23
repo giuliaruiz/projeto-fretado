@@ -40,7 +40,7 @@ export async function createAluno(form) {
     }
 }
 
-export async function updateAluno(id, form) {
+export async function updateAluno(id, form, updatePresenca = false) {
     try {
         const options = {
             method: "PUT",
@@ -50,7 +50,9 @@ export async function updateAluno(id, form) {
         const resp = await fetch(`http://localhost:3002/student/${id}`, options);
 
         if (resp.status == 200) {
-            alert("Atualizado com sucesso!")
+            if (!updatePresenca) {
+                alert("Atualizado com sucesso!");
+            }
             return true
         } else {
             throw new Error("Erro ao atualizar.")

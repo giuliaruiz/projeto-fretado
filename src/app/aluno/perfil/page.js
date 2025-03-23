@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { GetCookie } from "../../../actions/cookie";
+import { GetCookie } from "@/actions/cookie";
 
 const VerPerfilAluno = () => {
     const [perfil, setPerfil] = useState({});

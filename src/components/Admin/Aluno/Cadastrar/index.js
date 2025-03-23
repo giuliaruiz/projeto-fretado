@@ -18,25 +18,24 @@ export default function CadastrarAluno() {
 
     const { addAluno } = useAluno();
 
-    // Função para converter imagem em Base64
     const handleImageUpload = (e) => {
-        const file = e.target.files[0]; // Captura o arquivo
+        const file = e.target.files[0];
 
         if (file) {
             const reader = new FileReader();
-            reader.readAsDataURL(file); // Converte para Base64
+            reader.readAsDataURL(file);
             reader.onload = () => {
-                setForm({ ...form, fotoB64: reader.result }); // Salva no estado
-            };
+                setForm({ ...form, fotoB64: reader.result });
+            }
             reader.onerror = (error) => {
                 console.error("Erro ao converter imagem:", error);
-            };
+            }
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addAluno(form)  // Descomente para salvar no banco
+        addAluno(form)
     };
 
     return (
@@ -54,7 +53,7 @@ export default function CadastrarAluno() {
                     value={form.nome}
                     required
                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                    className="bg-[#222] text-white border-2 col-span-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
                 <input

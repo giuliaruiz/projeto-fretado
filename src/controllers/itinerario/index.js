@@ -76,9 +76,14 @@ export async function getItinerariosByAluno(id) {
     try {
         const resp = await fetch(`http://localhost:3002/itinerario/aluno/${id}`)
         let data = await resp.json()
-        //data = data.sort((a, b) => a.ordem - b.ordem);
 
-        return resp.status == 200 ? data : {}
+        if (resp.status == 200) {
+            data = data.sort((a, b) => a.ordem - b.ordem)
+            return data
+        } else {
+            return {}
+        }
+
     } catch (err) {
         throw `Erro durante a requisição: ${err}`
     }

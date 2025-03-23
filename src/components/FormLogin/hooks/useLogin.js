@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation"
-import { CreateCookie } from "../../../../actions/cookie"
+import { CreateCookie } from "@/actions/cookie"
 
 export const useLogin = () => {
 
