@@ -1,12 +1,13 @@
 "use client";
 import { itemAluno, itemAdmin, itemMotorista } from "../utils/sidebarConstant";
+import { getAlunoById } from "../controllers/aluno";
 import React, { useEffect, useState } from "react"
 import { GetCookie } from "@/actions/cookie"
 import { useRouter } from "next/navigation"
 
 export default function Sidebar({ role }) {
 
-    const [perfil, setPerfil] = useState({});
+    const [perfil, setPerfil] = useState({})
     const router = useRouter();
     const [openMenus, setOpenMenus] = useState({});
 
@@ -16,7 +17,9 @@ export default function Sidebar({ role }) {
     useEffect(() => {
         (async () => {
             const data = await GetCookie();
-            setPerfil(data.data)
+            const fotoAluno = await getAlunoById(data.data.id)
+
+            setPerfil({...data.data, foto: fotoAluno.fotoB64})
         })();
     }, []);
 
@@ -61,7 +64,7 @@ export default function Sidebar({ role }) {
         <div className="w-full h-full bg-[#222] flex flex-col py-8 px-4">
             <div className="flex flex-col items-center w-full">
                 <img
-                    src={perfil.fotoB64 || "./fotoperfil.jpg"}
+                    src={perfil.foto || "./fotoperfil.jpg"}
                     alt="Foto de Perfil"
                     className="w-24 h-24 rounded-full mb-2 bg-black"
                 />
