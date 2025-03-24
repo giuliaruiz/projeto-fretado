@@ -19,7 +19,7 @@ export const useAlunosEnderecos = () => {
 
         const data = itinerariosOrdenados.map(aluno => ({
             endereco: `${aluno.rua}, ${aluno.numero}, ${aluno.bairro}`,
-            name: aluno.nome,
+            nome: aluno.nome,
             foto: aluno.fotoB64 || "/default_student_image.png"
         }));
 

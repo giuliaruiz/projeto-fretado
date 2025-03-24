@@ -106,7 +106,7 @@ export const itemAdmin = [
 
 export const itemAluno = [
     {
-        link: "/aluno",
+        link: "/aluno/home",
         label: "Home",
         icon: <House {...defaultIconProps} />,
     },
@@ -115,11 +115,11 @@ export const itemAluno = [
         label: "Ver Perfil",
         icon: <User {...defaultIconProps} />,
     },
-    // {
-    //     link: "/aluno/editar",
-    //     label: "Editar Perfil",
-    //     icon: <Pencil {...defaultIconProps} />,
-    // },
+    {
+        link: "/aluno/editar",
+        label: "Editar Perfil",
+        icon: <Pencil {...defaultIconProps} />,
+    },
     {
         link: "/aluno/fretado",
         label: "Fretado",

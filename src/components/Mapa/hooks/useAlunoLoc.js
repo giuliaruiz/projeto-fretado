@@ -30,9 +30,12 @@ export const useAlunoLoc = (mapRef) => {
                     const lon = parseFloat(loc.lon);
 
                     L.marker([lat, lon], {
-                        icon: L.icon({
-                            iconUrl: item.foto,
-                            iconSize: [30, 30],
+                        icon: L.divIcon({
+                            html: `<div class="w-10 h-10 rounded-full bg-cover bg-center border-2 border-white shadow-md" 
+                                      style="background-image: url(${item.foto});"></div>`,
+                            className: '', 
+                            iconSize: [40, 40],
+                            iconAnchor: [20, 20]
                         }),
                     }).addTo(mapRef.current).bindPopup(`${item.nome} <br> ${item.endereco}`);
 

@@ -23,7 +23,7 @@ export const useLogin = () => {
                     router.push("/admin");
                     break;
                 case "aluno":
-                    router.push("/aluno");
+                    router.push("/aluno/home");
                     break;
                 case "motorista":
                     router.push("/motorista");
