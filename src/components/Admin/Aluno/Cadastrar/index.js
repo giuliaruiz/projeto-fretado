@@ -11,6 +11,7 @@ export default function CadastrarAluno() {
         email: "",
         telefone: "",
         cep: "",
+        cidade: "",
         rua: "",
         bairro: "",
         numero: "",
@@ -24,7 +25,7 @@ export default function CadastrarAluno() {
         const file = e.target.files[0];
         setFileName(file ? file.name : null)
 
-        
+
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -34,11 +35,10 @@ export default function CadastrarAluno() {
             reader.onerror = (error) => {
                 console.error("Erro ao converter imagem:", error);
             }
-        }else{
-            setForm({...form, fotoB64: ""})
+        } else {
+            setForm({ ...form, fotoB64: "" })
         }
     };
-    console.log(form)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -60,15 +60,15 @@ export default function CadastrarAluno() {
                     value={form.nome}
                     required
                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                    className="bg-[#222] text-white border-2 col-span-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
                 <input
-                    type="text"
-                    placeholder="Faculdade"
-                    value={form.faculdade}
+                    type="email"
+                    placeholder="Email"
+                    value={form.email}
                     required
-                    onChange={(e) => setForm({ ...form, faculdade: e.target.value })}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
@@ -81,9 +81,16 @@ export default function CadastrarAluno() {
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
-                {/* MANUTENCAO */}
+                <input
+                    type="text"
+                    placeholder="Faculdade"
+                    value={form.faculdade}
+                    required
+                    onChange={(e) => setForm({ ...form, faculdade: e.target.value })}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                />
+
                 <div>
-                    {/* Estilo personalizado para o arquivo */}
                     <input
                         type="file"
                         accept="image/*"
@@ -91,8 +98,6 @@ export default function CadastrarAluno() {
                         id="file-upload"
                         className="hidden"
                     />
-
-                    {/* Botão estilizado */}
                     <label
                         htmlFor="file-upload"
                         className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full cursor-pointer text-left focus:outline-none focus:border-[#2ecc71]">
@@ -108,15 +113,6 @@ export default function CadastrarAluno() {
                         )}
                     </label>
                 </div>
-
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={form.email}
-                    required
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
-                />
 
                 <input
                     type="text"
@@ -135,12 +131,13 @@ export default function CadastrarAluno() {
                     onChange={(e) => setForm({ ...form, cep: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
+
                 <input
                     type="text"
-                    placeholder="Rua"
-                    value={form.rua}
+                    placeholder="Cidade"
+                    value={form.cidade}
                     required
-                    onChange={(e) => setForm({ ...form, rua: e.target.value })}
+                    onChange={(e) => setForm({ ...form, cidade: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
@@ -150,6 +147,15 @@ export default function CadastrarAluno() {
                     value={form.bairro}
                     required
                     onChange={(e) => setForm({ ...form, bairro: e.target.value })}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                />
+
+                <input
+                    type="text"
+                    placeholder="Rua"
+                    value={form.rua}
+                    required
+                    onChange={(e) => setForm({ ...form, rua: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 

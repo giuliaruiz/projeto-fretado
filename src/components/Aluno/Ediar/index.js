@@ -1,8 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAluno } from "./hooks/useAluno";
+import { GetCookie } from "@/actions/cookie";
 
 export default function Editar() {
+    const [cookie, setCookie] = useState({})
     const [form, setForm] = useState({
         nome: "",
         faculdade: "",
@@ -10,44 +13,43 @@ export default function Editar() {
         email: "",
         telefone: "",
         cep: "",
+        cidade: "",
         rua: "",
         bairro: "",
         numero: "",
-        itinerario: "",
     });
-
-    const [itinerarios, setItinerarios] = useState([])
+    const { saveAluno } = useAluno()
+    const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:3002/itinerario")
-            .then((response) => response.json())
-            .then((data) => setItinerarios(data))
-            .catch((error) => console.error("Erro ao buscar itinerários:", error));
+        (async () => {
+            const data = await GetCookie()
+            setCookie(data)
+        })();
     }, []);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const resp = await fetch("http://localhost:3002/admin/createStudent", {
-                method: "POST",
-                body: JSON.stringify(form),
-                headers: { "Content-Type": "application/json" },
+    useEffect(() => {
+        if (cookie?.data) {
+            setForm({
+                nome: cookie.data.nome || "",
+                faculdade: cookie.data.faculdade || "",
+                cpf: cookie.data.cpf || "",
+                email: cookie.data.email || "",
+                telefone: cookie.data.telefone || "",
+                cep: cookie.data.cep || "",
+                cidade: cookie.data.cidade || "",
+                rua: cookie.data.rua || "",
+                bairro: cookie.data.bairro || "",
+                numero: cookie.data.numero || "",
             });
-
-            if (resp.status != 201) {
-                throw new Error("Erro ao cadastrar usuário");
-            }
-
-            alert("Cadastro realizado com sucesso!");
-            router.push("/admin");
-
-        } catch (error) {
-            console.error("Erro no cadastro:", error);
-            alert("Falha ao cadastrar. Verifique os dados.");
         }
+    }, [cookie]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        saveAluno(cookie.data.id, form)
     };
 
-    const router = useRouter();
 
     return (
         <div className="px-16 py-8 bg-[#333] rounded-lg w-[700px]">
@@ -111,6 +113,16 @@ export default function Editar() {
                     onChange={(e) => setForm({ ...form, cep: e.target.value })}
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
+
+                <input
+                    type="text"
+                    placeholder="Cidade"
+                    value={form.cidade}
+                    required
+                    onChange={(e) => setForm({ ...form, cidade: e.target.value })}
+                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                />
+
                 <input
                     type="text"
                     placeholder="Rua"
@@ -138,24 +150,11 @@ export default function Editar() {
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
-                <select
-                    value={form.itinerario}
-                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
-                    onChange={(e) => setForm({ ...form, itinerario: e.target.value })}
-                >
-                    <option value="">Selecione um itinerário</option>
-                    {itinerarios.map((itinerario) => (
-                        <option key={itinerario.id} value={itinerario.id}>
-                            {itinerario.nome}
-                        </option>
-                    ))}
-                </select>
-
                 <button type="submit">Cadastrar</button>
 
                 <button
                     type="button"
-                    onClick={() => router.push('/admin')}
+                    onClick={() => router.push('/aluno/home')}
                 >
                     Voltar
                 </button>

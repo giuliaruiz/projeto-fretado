@@ -38,7 +38,7 @@ export default function ListaAlunos() {
                     >
                         <div className="flex flex-col justify-start items-start">
                             <span className="text-lg">{aluno.nome}</span>
-                            <span className="text-sm text-slate-300">{aluno.rua}, {aluno.bairro} - {aluno.numero}</span>
+                            <span className="text-sm text-slate-300">{aluno.rua}, {aluno.numero}, {aluno.bairro} - {aluno.cidade}</span>
                             <span className="text-sm text-slate-300">Itinerario: {itinerarioByAluno[aluno.itinerario] || "Nenhum Itinerario"}</span>
                         </div>
                         <div className="flex flex-row gap-5 justify-center">

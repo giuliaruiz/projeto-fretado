@@ -49,7 +49,7 @@ export default function VerPerfil() {
                     ))
                 }
 
-                <div>
+                <div className="col-span-2">
                     <p className="text-lg">Itinerário</p>
                     <p className="bg-[#232323] w-full rounded-md py-2 border border-white px-4">
                         {itinerario ? itinerario.nome : "Não informado"}
