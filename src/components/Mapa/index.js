@@ -1,16 +1,18 @@
 "use client";
+import { useInicioFinalLoc } from "./hooks/useInicioFinalLoc";
 import { useMotortistaLoc } from "./hooks/useMotoristaLoc";
 import { useAlunoLoc } from "./hooks/useAlunoLoc";
 import React, { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-export default function Mapa({ alunosEnderecos, cargo }) {
+export default function Mapa({ alunosEnderecos, cargo, itinerario }) {
     const mapRef = useRef(null)
     const mapContainerRef = useRef(null)
 
     const { marcadorAluno } = useAlunoLoc(mapRef)
     const { marcadorMotortista } = useMotortistaLoc(mapRef)
+    const { marcadorInicio, marcadorFinal } = useInicioFinalLoc(mapRef)
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
@@ -24,6 +26,8 @@ export default function Mapa({ alunosEnderecos, cargo }) {
     useEffect(() => {
         if (!mapRef.current || !alunosEnderecos || alunosEnderecos.length === 0) return
         marcadorAluno(alunosEnderecos)
+        marcadorInicio(itinerario)
+        marcadorFinal(itinerario)
     }, [alunosEnderecos])
 
     useEffect(() => {

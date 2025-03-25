@@ -1,5 +1,6 @@
 "use client";
 import { useAlunosEnderecos } from "./hooks/useAlunosEnderecos";
+import { getItinerarioById } from "@/controllers/itinerario";
 import React, { useEffect, useState } from "react";
 import { usePresenca } from "./hooks/usePresenca";
 import { GetCookie } from "@/actions/cookie";
@@ -10,6 +11,7 @@ export default function Home() {
 
     const [checked, setChecked] = useState(true)
     const [cookie, setCookie] = useState({})
+    const [itinerario, setItinerario] = useState({})
 
     const { updatePresenca } = usePresenca()
     const { getAlunoEnderecos, alunosEnderecos } = useAlunosEnderecos()
@@ -20,6 +22,9 @@ export default function Home() {
             setCookie(data)
             setChecked(data.data.presenca);
             getAlunoEnderecos(data.data.itinerario)
+
+            const dataItinerario = await getItinerarioById(data.data.itinerario)
+            setItinerario(dataItinerario)
         })();
     }, []);
 
@@ -47,6 +52,7 @@ export default function Home() {
                     <Mapa
                         alunosEnderecos={alunosEnderecos}
                         cargo={cookie?.cargo}
+                        itinerario={itinerario}
                     />
                 )}
             </div>

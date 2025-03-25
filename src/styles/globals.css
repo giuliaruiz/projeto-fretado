@@ -137,3 +137,7 @@ th {
   max-width: 90vw;
 }
 
+.leaflet-div-icon {
+  background: none !important; /* Remove o fundo */
+  border: none !important; /* Remove a borda */
+}
