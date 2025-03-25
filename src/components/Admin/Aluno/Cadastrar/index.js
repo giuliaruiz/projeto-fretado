@@ -1,4 +1,5 @@
 "use client"
+import { X } from "lucide-react";
 import { useAluno } from "./hooks/useAluno"
 import { useState } from "react"
 
@@ -15,12 +16,15 @@ export default function CadastrarAluno() {
         numero: "",
         fotoB64: "",
     });
+    const [fileName, setFileName] = useState(null)
 
     const { addAluno } = useAluno();
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
+        setFileName(file ? file.name : null)
 
+        
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -30,8 +34,11 @@ export default function CadastrarAluno() {
             reader.onerror = (error) => {
                 console.error("Erro ao converter imagem:", error);
             }
+        }else{
+            setForm({...form, fotoB64: ""})
         }
     };
+    console.log(form)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -74,14 +81,33 @@ export default function CadastrarAluno() {
                     className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
-                {/* Input para Upload da Imagem */}
-                <input
-                    type="file"
-                    accept="image/*"
-                    required
-                    onChange={handleImageUpload}
-                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
-                />
+                {/* MANUTENCAO */}
+                <div>
+                    {/* Estilo personalizado para o arquivo */}
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        id="file-upload"
+                        className="hidden"
+                    />
+
+                    {/* Botão estilizado */}
+                    <label
+                        htmlFor="file-upload"
+                        className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full cursor-pointer text-left focus:outline-none focus:border-[#2ecc71]">
+                        {fileName ? (
+                            <div className="flex flex-row justify-between">
+                                {fileName}
+                                <X
+                                    color={"#A45"}
+                                />
+                            </div>
+                        ) : (
+                            'Escolha sua foto'
+                        )}
+                    </label>
+                </div>
 
                 <input
                     type="email"

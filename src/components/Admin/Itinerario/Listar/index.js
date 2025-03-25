@@ -134,7 +134,7 @@ export default function ListarItinerario() {
                 </DragDropContext>
             )}
 
-            {selectedItinerario && (
+            {selectedItinerario && alunos.length != 0 && (
                 <button
                     onClick={salvarOrdenacao}
                     className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg"

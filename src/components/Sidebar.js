@@ -1,6 +1,8 @@
 "use client";
 import { itemAluno, itemAdmin, itemMotorista } from "../utils/sidebarConstant";
+import { getMotoristaById } from "@/controllers/motorista";
 import { getAlunoById } from "../controllers/aluno";
+import { getAdminById } from "../controllers/admin";
 import React, { useEffect, useState } from "react"
 import { GetCookie } from "@/actions/cookie"
 import { useRouter } from "next/navigation"
@@ -17,9 +19,19 @@ export default function Sidebar({ role }) {
     useEffect(() => {
         (async () => {
             const data = await GetCookie();
-            const fotoAluno = await getAlunoById(data.data.id)
+            let fotoUser
+            
+            if (role == "aluno") {
+                fotoUser = await getAlunoById(data.data.id)
+            }
+            if (role == "admin") {
+                fotoUser = await getAdminById(data.data.id)
+            }
+            if (role == "motorista") {
+                fotoUser = await getMotoristaById(data.data.id)
+            }
 
-            setPerfil({...data.data, foto: fotoAluno.fotoB64})
+            setPerfil({ ...data.data, foto: fotoUser.fotoB64 })
         })();
     }, []);
 

@@ -34,7 +34,7 @@ export const useItinerario = () => {
                         }
                         if(itineraio.van) {
                             const dataVan = await getVanById(itineraio.van)
-                            motoristaMap[itineraio.van] = dataVan.placa
+                            vanMap[itineraio.van] = dataVan.placa
                         }
                     })
                 )

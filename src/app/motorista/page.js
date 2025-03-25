@@ -1,4 +1,4 @@
-import MapaMotorista from "@/components/MapaMotorista";
+import Mapa from "@/components/Mapa";
 
 export default function Motorista() {
     return (
@@ -7,7 +7,7 @@ export default function Motorista() {
                 Bem-vindo, Motorista!
             </h1>
             <div className="w-full h-full">
-                <MapaMotorista />
+                <Mapa />
             </div>
         </div>
     );
