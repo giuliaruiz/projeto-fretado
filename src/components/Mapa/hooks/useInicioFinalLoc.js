@@ -39,8 +39,8 @@ export const useInicioFinalLoc = (mapRef) => {
                 L.marker([lat, lon], {
                     icon: L.divIcon({
                         html: `<div class="w-10 h-10"
-                                   style="background-image: url('/inicio.png'); background-size: cover; background-position: center;"></div>`,
-                        iconSize: [40, 40],
+                                   style="background-image: url('/pontoinicial.png'); background-size: cover; background-position: center;"></div>`,
+                        iconSize: [20, 20],
                         iconAnchor: [20, 20],
                     }),
                 }).addTo(mapRef.current).bindPopup(itinerario.inicio);
@@ -89,8 +89,8 @@ export const useInicioFinalLoc = (mapRef) => {
                 L.marker([lat, lon], {
                     icon: L.divIcon({
                         html: `<div class="w-10 h-10"
-                                   style="background-image: url('/inicio.png'); background-size: cover; background-position: center;"></div>`,
-                        iconSize: [40, 40],
+                                   style="background-image: url('/pontofinal.png'); background-size: cover; background-position: center;"></div>`,
+                        iconSize: [20, 20],
                         iconAnchor: [20, 20],
                     }),
                 }).addTo(mapRef.current).bindPopup(itinerario.final);
@@ -107,4 +107,4 @@ export const useInicioFinalLoc = (mapRef) => {
     }
 
     return { marcadorInicio, marcadorFinal, inicioLoc, finalLoc }
-}
+};
