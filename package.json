@@ -16,7 +16,7 @@
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
     "lucide-react": "^0.479.0",
-    "next": "15.1.7",
+    "next": "^15.2.4",
     "node": "^23.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

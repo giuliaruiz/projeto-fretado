@@ -1,10 +1,16 @@
 import L from "leaflet";
+import { useState } from "react";
 
 export const useInicioFinalLoc = (mapRef) => {
+
+    const [inicioLoc, setInicioLoc] = useState({})
+    const [finalLoc, setFinalLoc] = useState({})
 
     const marcadorInicio = async (itinerario) => {
 
         if (!mapRef.current) return;
+
+        let inicioLocVariavel = {}
 
         const user_agent = "Geopy Library";
         const baseUrl = "https://nominatim.openstreetmap.org/search";
@@ -28,6 +34,8 @@ export const useInicioFinalLoc = (mapRef) => {
                 const lat = parseFloat(loc.lat);
                 const lon = parseFloat(loc.lon);
 
+                inicioLocVariavel = { lat, lon }
+
                 L.marker([lat, lon], {
                     icon: L.divIcon({
                         html: `<div class="w-10 h-10"
@@ -44,11 +52,15 @@ export const useInicioFinalLoc = (mapRef) => {
         } catch (error) {
             console.error(`Erro ao buscar localização para o local: `, error);
         }
+
+        setInicioLoc(inicioLocVariavel)
     }
 
     const marcadorFinal = async (itinerario) => {
 
         if (!mapRef.current) return;
+
+        let finalLocVariavel = {}
 
         const user_agent = "Geopy Library";
         const baseUrl = "https://nominatim.openstreetmap.org/search";
@@ -72,6 +84,8 @@ export const useInicioFinalLoc = (mapRef) => {
                 const lat = parseFloat(loc.lat);
                 const lon = parseFloat(loc.lon);
 
+                finalLocVariavel = { lat, lon }
+
                 L.marker([lat, lon], {
                     icon: L.divIcon({
                         html: `<div class="w-10 h-10"
@@ -88,7 +102,9 @@ export const useInicioFinalLoc = (mapRef) => {
         } catch (error) {
             console.error(`Erro ao buscar localização para o local: `, error);
         }
+
+        setFinalLoc(finalLocVariavel)
     }
 
-    return { marcadorInicio, marcadorFinal }
+    return { marcadorInicio, marcadorFinal, inicioLoc, finalLoc }
 }

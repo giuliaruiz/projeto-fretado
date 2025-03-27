@@ -141,3 +141,7 @@ th {
   background: none !important; /* Remove o fundo */
   border: none !important; /* Remove a borda */
 }
+
+.leaflet-top.leaflet-right {
+  display: none !important;
+}

@@ -1,8 +1,13 @@
 import L from "leaflet";
+import { useState } from "react";
 
 export const useAlunoLoc = (mapRef) => {
 
+    const [alunosLoc, setAlunosLoc] = useState([])
+
     const marcadorAluno = async (alunosEnderecos) => {
+
+        let alunosLocVariavel = [];
 
         if (!mapRef.current) return;
 
@@ -29,6 +34,8 @@ export const useAlunoLoc = (mapRef) => {
                     const lat = parseFloat(loc.lat);
                     const lon = parseFloat(loc.lon);
 
+                    alunosLocVariavel.push({lat, lon})
+
                     L.marker([lat, lon], {
                         icon: L.divIcon({
                             html: `<div class="w-10 h-10 rounded-full bg-cover bg-center border-2 border-white shadow-md" 
@@ -46,7 +53,9 @@ export const useAlunoLoc = (mapRef) => {
                 console.error(`Erro ao buscar localização para o local: `, error);
             }
         }
+
+        setAlunosLoc(alunosLocVariavel)
     }
 
-    return { marcadorAluno }
+    return { marcadorAluno, alunosLoc }
 }
