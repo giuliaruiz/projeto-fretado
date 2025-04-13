@@ -31,7 +31,7 @@ export const useLogin = () => {
                     router.push("/aluno/home");
                     break;
                 case "motorista":
-                    router.push("/motorista");
+                    router.push("/motorista/home");
                     break;
                 default:
                     alert("Cargo inválido!");
@@ -42,5 +42,5 @@ export const useLogin = () => {
         }
     }
 
-    return { login }
+    return { login };
 }

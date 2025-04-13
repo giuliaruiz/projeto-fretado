@@ -3,6 +3,7 @@ import { MotoristaCreate } from "@/@types/type"
 import { useMotorista } from "./hooks/useMotorista"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { X } from "lucide-react"
 
 export default function CadastrarMotorista() {
     const [form, setForm] = useState<MotoristaCreate>({
@@ -10,10 +11,30 @@ export default function CadastrarMotorista() {
         telefone: "",
         email: "",
         habilitacao: "",
+        fotoB64: "",
     })
-
+    const [fileName, setFileName] = useState<string | null>(null)
     const { addMotorista } = useMotorista()
     const router = useRouter()
+
+    const handleImageUpload = (e: any) => {
+        const file = e.target.files[0];
+        setFileName(file ? file.name : null)
+
+
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setForm({ ...form, fotoB64: reader.result ? reader.result as string : "" });
+            }
+            reader.onerror = (error) => {
+                console.error("Erro ao converter imagem:", error);
+            }
+        } else {
+            setForm({ ...form, fotoB64: "" })
+        }
+    };
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
@@ -35,8 +56,32 @@ export default function CadastrarMotorista() {
                     value={form.nome}
                     required
                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                    className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                    className="bg-[#222] col-span-2 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
+
+                <div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        id="file-upload"
+                        className="hidden"
+                    />
+                    <label
+                        htmlFor="file-upload"
+                        className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full cursor-pointer text-left focus:outline-none focus:border-[#2ecc71]">
+                        {fileName ? (
+                            <div className="flex flex-row justify-between">
+                                {fileName}
+                                <X
+                                    color={"#A45"}
+                                />
+                            </div>
+                        ) : (
+                            'Escolha sua foto'
+                        )}
+                    </label>
+                </div>
 
                 <input
                     type="email"

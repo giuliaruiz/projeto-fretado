@@ -44,7 +44,7 @@ export type Motorista = {
     fotoB64?: string;
 }
 
-export type MotoristaCreate = Omit<Motorista, "id" | "senha" | "itinerario" | "fotoB64">;
+export type MotoristaCreate = Omit<Motorista, "id" | "senha" | "itinerario">;
 
 export type Van = {
     id: number;
