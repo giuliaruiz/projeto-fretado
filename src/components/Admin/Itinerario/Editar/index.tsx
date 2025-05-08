@@ -22,7 +22,7 @@ export default function EditarItinerario() {
     }
 
     return (
-        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
+        <div className="w-full md:w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
             <h1 className="text-3xl mb-5">
                 Editar Itinerario
             </h1>

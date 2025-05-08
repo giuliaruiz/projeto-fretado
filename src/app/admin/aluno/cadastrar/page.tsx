@@ -2,6 +2,8 @@ import CadastrarAluno from "@/components/Admin/Aluno/Cadastrar"
 
 export default function Cadastrar() {
     return (
-        <CadastrarAluno />
+        <div>
+            <CadastrarAluno />
+        </div>
     )
 }

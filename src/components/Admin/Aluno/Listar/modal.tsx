@@ -35,7 +35,7 @@ export default function Modal({ aluno, fecharModal, setAlunos, alunos } : IModal
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-[#333] p-5 rounded-lg w-[400px]">
+            <div className="bg-[#333] p-5 rounded-lg w-5/6 md:w-[400px]">
 
                 <h2 className="text-2xl mb-3">
                     Editar Itinerario

@@ -15,11 +15,11 @@ export default function FormLogin() {
     }
 
     return (
-        <div>
+        <div className="w-full">
             <h1 className="text-3xl mb-5">Login</h1>
             <form
                 onSubmit={handleSubmit}
-                className="flex flex-col w-96 gap-3"
+                className="flex flex-col w-5/6 sm:w-96 gap-3"
             >
                 <input
                     type="email"

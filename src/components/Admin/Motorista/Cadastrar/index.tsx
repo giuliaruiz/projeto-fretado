@@ -42,13 +42,13 @@ export default function CadastrarMotorista() {
     }
 
     return (
-        <div className="px-16 py-8 bg-[#333] rounded-lg w-[700px]">
+        <div className="px-6 sm:px-16 py-8 bg-[#333] rounded-lg w-full sm:w-[400px] md:w-[700px]">
             <h1 className="text-3xl mb-5">
                 Cadastrar Motorista
             </h1>
             <form
                 onSubmit={handleSubmit}
-                className="grid grid-cols-2  gap-5 w-full"
+                className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full"
             >
                 <input
                     type="text"
@@ -56,7 +56,7 @@ export default function CadastrarMotorista() {
                     value={form.nome}
                     required
                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                    className="bg-[#222] col-span-2 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                    className="bg-[#222] md:col-span-2 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                 />
 
                 <div>

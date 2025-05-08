@@ -43,8 +43,8 @@ export default function Modal({ itinerario, fecharModal, setItinerarios, itinera
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-[#333] p-5 rounded-lg w-[600px]">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center overflow-y-auto">
+            <div className="bg-[#333] p-5 rounded-lg w-5/6 md:w-[600px] max-h-[90vh] overflow-y-auto">
 
                 <h2 className="text-2xl mb-3">
                     Editar Itinerario
@@ -52,7 +52,7 @@ export default function Modal({ itinerario, fecharModal, setItinerarios, itinera
 
                 <p className="mb-2">Nome do Itinerario: <strong>{itinerario.nome}</strong></p>
                 <form
-                    className="grid grid-cols-3  gap-4 w-full"
+                    className="grid grid-cols-1 md:grid-cols-3 max-h-[70vh] gap-4 w-full"
                 >
                     <input
                         type="text"
@@ -60,7 +60,7 @@ export default function Modal({ itinerario, fecharModal, setItinerarios, itinera
                         value={form.nome || itinerario.nome}
                         required
                         onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                        className="bg-[#222] col-span-3 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                        className="bg-[#222] md:col-span-3 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                     />
 
                     <input
@@ -171,7 +171,7 @@ export default function Modal({ itinerario, fecharModal, setItinerarios, itinera
                         className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                     />
 
-                    <div className="col-span-3 grid grid-cols-2 gap-4">
+                    <div className="md:col-span-3 grid grid-cols-2 gap-4">
                         <select
                             value={form.motorista || itinerario.motorista || 0}
                             className="bg-[#222] text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
@@ -205,7 +205,7 @@ export default function Modal({ itinerario, fecharModal, setItinerarios, itinera
                         </select>
                     </div>
 
-                    <div className="col-span-3 grid grid-cols-2 gap-4">
+                    <div className="md:col-span-3 grid grid-cols-2 gap-4">
                         <button
                             type="submit"
                             onClick={() => handleSave(itinerario.id)}

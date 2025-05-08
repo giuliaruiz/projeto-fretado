@@ -29,7 +29,7 @@ export default function Modal({ van, fecharModal, setVans, vans }: IModalProps) 
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-[#333] p-5 rounded-lg w-[500px]">
+            <div className="bg-[#333] p-5 rounded-lg w-5/6 md:w-[500px]">
 
                 <h2 className="text-2xl mb-3">
                     Editar Van
@@ -37,7 +37,7 @@ export default function Modal({ van, fecharModal, setVans, vans }: IModalProps) 
 
                 <p className="mb-2">Placa da Van: <strong>{van.placa}</strong></p>
                 <form
-                    className="grid grid-cols-2 gap-5 w-full"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full"
                 >
                     <input
                         type="text"
@@ -45,7 +45,7 @@ export default function Modal({ van, fecharModal, setVans, vans }: IModalProps) 
                         value={form.placa || van.placa}
                         required
                         onChange={(e) => setForm({ ...form, placa: e.target.value })}
-                        className="bg-[#222] col-span-2 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
+                        className="bg-[#222] md:col-span-2 text-white border-2 border-[#333] rounded-lg p-3 w-full focus:border-[#2ecc71] focus:outline-none"
                     />
 
                     <input
