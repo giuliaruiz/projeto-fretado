@@ -24,11 +24,11 @@ export default function Fretado() {
     }, [perfil])
 
     return (
-        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
+        <div className="px-6 sm:px-16 py-8 bg-[#333] rounded-lg w-full sm:w-[400px] md:w-[700px]">
             <h1 className="text-3xl mb-5">
                 Seu Trajeto
             </h1>
-            <div className="grid grid-cols-2 p-4 gap-3 w-full rounded-lg bg-[#222] mb-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-3 w-full rounded-lg bg-[#222] mb-3">
 
                 <div className="flex flex-row gap-4 justify-start">
                     <SendHorizontal color="green" />

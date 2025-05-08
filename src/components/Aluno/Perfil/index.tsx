@@ -34,10 +34,10 @@ export default function VerPerfil() {
     }
 
     return (
-        <div className="px-16 py-8 bg-[#333] rounded-lg w-[700px] text-white">
+        <div className="px-6 sm:px-16 py-8 bg-[#333] rounded-lg w-full sm:w-[400px] md:w-[700px]">
             <h1 className="text-3xl mb-5">Ver Perfil</h1>
 
-            <div className="grid grid-cols-2 gap-5 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
                 {Object.entries(perfil)
                     .filter(([key]) => !camposOcultos.includes(key))
                     .map(([key, value]) => (
@@ -50,7 +50,7 @@ export default function VerPerfil() {
                     ))
                 }
 
-                <div className="col-span-2">
+                <div className="md:col-span-2">
                     <p className="text-lg">Itinerário</p>
                     <p className="bg-[#232323] w-full rounded-md py-2 border border-white px-4">
                         {itinerario ? itinerario.nome : "Não informado"}
