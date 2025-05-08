@@ -1,7 +1,9 @@
 import Fretado from "@/components/Motorista/Fretado";
 
 export default function FretadoPage() {
-    return(
-        <Fretado />
+    return (
+        <div>
+            <Fretado />
+        </div>
     )
 }

@@ -22,7 +22,7 @@ export default function Fretado() {
     }, []);
 
     return (
-        <div className="w-[700px] p-5 bg-[#333] rounded-lg text-center text-white">
+        <div className="px-6 sm:px-16 py-8 bg-[#333] rounded-lg w-full sm:w-[400px] md:w-[700px]">
             <h1 className="text-3xl mb-5">
                 Listar Itinerario
             </h1>
